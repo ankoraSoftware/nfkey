@@ -1,15 +1,15 @@
-import Image from 'next/image';
-import { Inter } from 'next/font/google';
-import FileUpload from '@/components/FileUpload';
-import { useState } from 'react';
-import Input from '@/components/Input';
-import TextArea from '@/components/Textarea';
-import axios from 'axios';
-import { Helper } from '@/helpers/helper';
-import router from 'next/router';
-import { ContractHelper } from '@/helpers/contract';
+import Image from "next/image";
+import { Inter } from "next/font/google";
+import FileUpload from "@/components/FileUpload";
+import { useState } from "react";
+import Input from "@/components/Input";
+import TextArea from "@/components/Textarea";
+import axios from "axios";
+import { Helper } from "@/helpers/helper";
+import router from "next/router";
+import { ContractHelper } from "@/helpers/contract";
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ["latin"] });
 
 interface NftFormData {
   name: string;
@@ -23,9 +23,9 @@ interface NftFormData {
 
 export default function Home() {
   const [formData, setFormData] = useState<NftFormData>({
-    name: '',
-    externalLink: '',
-    description: '',
+    name: "",
+    externalLink: "",
+    description: "",
     file: null,
     supply: 0,
   });
@@ -48,9 +48,10 @@ export default function Home() {
       };
       const hash = await Helper.uploadJsonToIpfs(metadata);
       const contract = await ContractHelper.init();
-      await contract.createToken(formData.supply, hash);
+      const tx = await contract.createToken(formData.supply, hash);
+      await tx.wait();
       //   router.push('/');
-      alert('finito');
+      alert("finito");
     } catch (error) {
       console.error(error);
       // Handle the error here
@@ -66,7 +67,7 @@ export default function Home() {
     }));
   };
 
-  console.log('formData', formData);
+  console.log("formData", formData);
 
   return (
     <main

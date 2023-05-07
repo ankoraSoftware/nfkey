@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  mongodb:
+    image: mongo
+    container_name: nfkey-db
+    mem_limit: 1024m
+    mem_reservation: 128M
+    networks:
+      - webnet
+    environment:
+      - MONGO_INITDB_DATABASE=nfkey
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=local
+    ports:
+      - 27010:27017
+    volumes:
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+
+networks:
+  webnet:
+    name: nfkey
+    driver: bridge
+volumes:
+  cache:
+    driver: local

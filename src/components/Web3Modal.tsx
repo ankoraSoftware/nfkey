@@ -1,9 +1,9 @@
-import Web3Modal from 'web3modal';
-import WalletConnectProvider from '@walletconnect/web3-provider';
-import { BscConnector } from '@binance-chain/bsc-connector';
-import { ethers } from 'ethers';
+import Web3Modal from "web3modal";
+import WalletConnectProvider from "@walletconnect/web3-provider";
+import { BscConnector } from "@binance-chain/bsc-connector";
+import { ethers } from "ethers";
 
-const PROVIDER_STORAGE_KEY = 'walletProvider';
+const PROVIDER_STORAGE_KEY = "walletProvider";
 
 export const getWeb3Modal = (): Web3Modal => {
   const providerOptions = {
@@ -11,8 +11,8 @@ export const getWeb3Modal = (): Web3Modal => {
       package: WalletConnectProvider,
       options: {
         rpc: {
-          56: 'https://bsc-dataseed.binance.org/',
-          97: 'https://data-seed-prebsc-1-s1.binance.org:8545/',
+          56: "https://bsc-dataseed.binance.org/",
+          97: "https://data-seed-prebsc-1-s1.binance.org:8545/",
         },
         networkId: 56,
       },
@@ -27,7 +27,7 @@ export const getWeb3Modal = (): Web3Modal => {
 
   const cachedProvider = localStorage.getItem(PROVIDER_STORAGE_KEY);
   const web3Modal = new Web3Modal({
-    network: 'mainnet',
+    network: "mainnet",
     cacheProvider: cachedProvider !== null,
     providerOptions,
   });
