@@ -1,42 +1,44 @@
-import Image from 'next/image';
-import { Inter } from 'next/font/google';
-import FileUpload from '@/components/FileUpload';
-import { useState } from 'react';
-import Input from '@/components/Input';
-import TextArea from '@/components/Textarea';
-import axios from 'axios';
-import { Helper } from '@/helpers/helper';
-import router, { useRouter } from 'next/router';
-import { ContractHelper } from '@/helpers/contract';
-import { ChevronDownIcon } from '@heroicons/react/24/outline';
-import Select from '@/components/Select';
-import { api } from '@/lib/api';
+import Image from "next/image";
+import { Inter } from "next/font/google";
+import FileUpload from "@/components/FileUpload";
+import { useState } from "react";
+import Input from "@/components/Input";
+import TextArea from "@/components/Textarea";
+import axios from "axios";
+import { Helper } from "@/helpers/helper";
+import router, { useRouter } from "next/router";
+import { ContractHelper } from "@/helpers/contract";
+import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import Select from "@/components/Select";
+import { api } from "@/lib/api";
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ["latin"] });
 
 interface LockFormData {
   name: string;
   type: string;
   apiKey: string;
+  userId: string;
 }
 export enum ELock {
-  nuki = 'Nuki',
-  random = 'RandomLock',
+  nuki = "Nuki",
+  random = "RandomLock",
 }
 
-export default function Home() {
+export default function Home({ user }: any) {
   const router = useRouter();
   const [formData, setFormData] = useState<LockFormData>({
-    name: '',
+    name: "",
     type: ELock.nuki,
-    apiKey: '',
+    apiKey: "",
+    userId: user?._id,
   });
 
   const onSubmit = async () => {
     try {
       await api.createLock(formData);
-      alert('Successfully created lock');
-      router.push('/lock');
+      alert("Successfully created lock");
+      router.push("/lock");
     } catch (error) {
       console.error(error);
       // Handle the error here
@@ -51,6 +53,8 @@ export default function Home() {
       [name]: value,
     }));
   };
+
+  console.log(user);
 
   return (
     <main
@@ -102,4 +106,17 @@ export default function Home() {
       </div>
     </main>
   );
+}
+
+export async function getServerSideProps({ req }: any) {
+  const auth = req?.cookies?.["auth"];
+  api.updateHeaders("Authorization", auth);
+  let user = {};
+  if (auth) {
+    user = await api.me();
+  }
+
+  return {
+    props: { user },
+  };
 }
