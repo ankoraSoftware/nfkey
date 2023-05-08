@@ -1,18 +1,18 @@
-import Image from "next/image";
-import { Inter } from "next/font/google";
-import FileUpload from "@/components/FileUpload";
-import { useState } from "react";
-import Input from "@/components/Input";
-import TextArea from "@/components/Textarea";
-import axios from "axios";
-import { Helper } from "@/helpers/helper";
-import router from "next/router";
-import { ContractHelper } from "@/helpers/contract";
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
-import Select from "@/components/Select";
-import { api } from "@/lib/api";
+import Image from 'next/image';
+import { Inter } from 'next/font/google';
+import FileUpload from '@/components/FileUpload';
+import { useState } from 'react';
+import Input from '@/components/Input';
+import TextArea from '@/components/Textarea';
+import axios from 'axios';
+import { Helper } from '@/helpers/helper';
+import router from 'next/router';
+import { ContractHelper } from '@/helpers/contract';
+import { ChevronDownIcon } from '@heroicons/react/24/outline';
+import Select from '@/components/Select';
+import { api } from '@/lib/api';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 interface LockFormData {
   name: string;
@@ -20,8 +20,8 @@ interface LockFormData {
   apiKey: string;
 }
 export enum ELock {
-  nuki = "Nuki",
-  random = "RandomLock",
+  nuki = 'Nuki',
+  random = 'RandomLock',
 }
 
 export default function EditLock({ lock }: any) {
@@ -34,8 +34,8 @@ export default function EditLock({ lock }: any) {
   const onSubmit = async () => {
     try {
       await api.updateLock(lock._id, formData);
-      alert("Successfully updated lock");
-      router.push("/lock");
+      alert('Successfully updated lock');
+      router.push('/lock');
     } catch (error) {
       console.error(error);
       // Handle the error here
@@ -94,7 +94,7 @@ export default function EditLock({ lock }: any) {
 
           <button
             onClick={onSubmit}
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
           >
             Submit
           </button>

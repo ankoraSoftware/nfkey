@@ -28,7 +28,7 @@ const FileUpload = ({
     <div className="flex items-center justify-center w-full">
       <label
         htmlFor="dropzone-file"
-        className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+        className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50  hover:bg-gray-100"
       >
         {previewUrl ? (
           <>
@@ -39,9 +39,7 @@ const FileUpload = ({
               alt={selectedFileName}
               className="h-48 w-full object-cover rounded-lg"
             />
-            <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-              {selectedFileName}
-            </p>
+            <p className="mb-2 text-sm text-gray-500">{selectedFileName}</p>
           </>
         ) : (
           <div className="flex flex-col items-center justify-center pt-5 pb-6">
@@ -61,12 +59,10 @@ const FileUpload = ({
               ></path>
             </svg>
 
-            <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+            <p className="mb-2 text-sm text-gray-500">
               <span className="font-semibold">{label}</span> or drag and drop
             </p>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
-              SVG, PNG, JPG or GIF
-            </p>
+            <p className="text-xs text-gray-500">SVG, PNG, JPG or GIF</p>
           </div>
         )}
         <input
