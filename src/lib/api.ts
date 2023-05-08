@@ -1,4 +1,5 @@
 import axios, { Axios } from "axios";
+import { Metadata, NftAttributes } from "./db/nft";
 
 export class Api {
   api: Axios;
@@ -37,6 +38,31 @@ export class Api {
   async deleteLock(id: string) {
     const res = await this.api.delete(`/api/lock/delete/${id}`);
     return res.data.lock;
+  }
+
+  async createNft(data: Metadata) {
+    const res = await this.api.post("/api/nft/create", data);
+    return res.data;
+  }
+
+  async getNfts() {
+    const res = await this.api.get("/api/nft");
+    return res.data;
+  }
+
+  async getNft(id: string) {
+    const res = await this.api.get(`/api/nft/${id}`);
+    return res.data;
+  }
+
+  async updateNft(id: string, data: any) {
+    const res = await this.api.patch(`/api/nft/update/${id}`, data);
+    return res.data;
+  }
+
+  async deleteNft(id: string) {
+    const res = await this.api.delete(`/api/nft/delete/${id}`);
+    return res.data;
   }
 
   public updateHeaders(key: string, value: string) {

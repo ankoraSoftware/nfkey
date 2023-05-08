@@ -8,6 +8,7 @@ import axios from "axios";
 import { Helper } from "@/helpers/helper";
 import router from "next/router";
 import { ContractHelper } from "@/helpers/contract";
+import { api } from "@/lib/api";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -49,9 +50,10 @@ export default function Home() {
       const hash = await Helper.uploadJsonToIpfs(metadata);
       const contract = await ContractHelper.init();
       const tx = await contract.createToken(formData.supply, hash);
+      const nft = await api.createNft(metadata);
       await tx.wait();
       //   router.push('/');
-      alert("finito");
+      alert("finito" + JSON.stringify(nft));
     } catch (error) {
       console.error(error);
       // Handle the error here
