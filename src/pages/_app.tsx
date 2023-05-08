@@ -1,9 +1,16 @@
+import Sidebar from '@/components/Sidebar';
 import { api } from '@/lib/api';
 import '@/styles/globals.css';
 import type { AppContext, AppProps } from 'next/app';
-console.log('test');
 export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+  return (
+    <div className="flex flex-wrap w-full min-w-full pt-4">
+      <Sidebar />
+      <div className="w-full flex-1 mr-3">
+        <Component {...pageProps} />
+      </div>
+    </div>
+  );
 }
 
 App.getInitialProps = async (appContext: AppContext) => {

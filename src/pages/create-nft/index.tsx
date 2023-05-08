@@ -73,7 +73,7 @@ export default function Home() {
 
   return (
     <main
-      className={`max-w-[1440px] min-h-screen  m-auto bg-gray-100 flex pb-4 justify-center ${inter.className}`}
+      className={`max-w-[1440px] w-full min-h-screen  m-auto bg-gray-100 flex pb-4 justify-center ${inter.className}`}
     >
       <div className="max-w-[600px] m-auto w-full flex flex-col mt-10 text-orange-500 ">
         <h1 className="mb-10">Create nft</h1>
