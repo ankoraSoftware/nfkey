@@ -33,8 +33,9 @@ export default function EditLock({ lock }: any) {
 
   const onSubmit = async () => {
     try {
-      await api.updateLock("6458d733a7ad98f736b3ade7", formData);
+      await api.updateLock(lock._id, formData);
       alert("Successfully updated lock");
+      router.push("/lock");
     } catch (error) {
       console.error(error);
       // Handle the error here
