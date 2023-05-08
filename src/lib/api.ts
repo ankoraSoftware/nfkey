@@ -19,6 +19,27 @@ export class Api {
     return res.data.user;
   }
 
+  async getLocks() {
+    const res = await this.api.get("/api/lock");
+    return res.data.lock;
+  }
+  async getLock(id: string) {
+    const res = await this.api.get(`/api/lock/one/${id}`);
+    return res.data.lock;
+  }
+  async createLock(data: any) {
+    const res = await this.api.post("/api/lock/create", data);
+    return res.data.lock;
+  }
+  async updateLock(id: string, data: any) {
+    const res = await this.api.patch(`/api/lock/update/${id}`, data);
+    return res.data.lock;
+  }
+  async deleteLock(id: string) {
+    const res = await this.api.delete(`/api/lock/delete/${id}`);
+    return res.data.lock;
+  }
+
   async createNft(data: Metadata) {
     const res = await this.api.post("/api/nft/create", data);
     return res.data;
