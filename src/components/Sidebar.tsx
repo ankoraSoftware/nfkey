@@ -15,7 +15,7 @@ import {
 } from '@heroicons/react/24/outline';
 
 const navigation = [
-  { name: 'Nft', href: '/create-nft', icon: HomeIcon },
+  { name: 'Nft', href: '/nft', icon: HomeIcon },
   { name: 'Lock', href: '/lock', icon: UsersIcon },
 ];
 
