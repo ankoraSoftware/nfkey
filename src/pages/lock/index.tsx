@@ -2,7 +2,7 @@ import React from 'react';
 import { api } from '@/lib/api';
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Router, { useRouter } from 'next/router';
-import Table from '@/components/tableComp';
+import Table from '@/components/table';
 
 const Locks = ({ locks }: any) => {
   const router = useRouter();

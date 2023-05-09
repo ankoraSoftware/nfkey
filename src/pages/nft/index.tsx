@@ -1,7 +1,7 @@
 import { api } from "@/lib/api";
 import Router, { useRouter } from "next/router";
 import React, { useState } from "react";
-import Table from "@/components/tableComp";
+import Table from "@/components/table";
 import {
   PencilSquareIcon,
   PlusIcon,
