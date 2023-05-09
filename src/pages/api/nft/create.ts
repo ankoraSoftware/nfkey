@@ -11,7 +11,6 @@ async function handler(req: AuthenticatedRequest, res: NextApiResponse) {
   }
   await db();
   // Handle the POST request here
-  console.log("USER", req.user);
 
   const nft = await Nft.create({
     metadata: req.body,

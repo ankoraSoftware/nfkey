@@ -30,7 +30,6 @@ export default function Home({ user }: { user: UserDocument }) {
     const { data } = await axios.get("/api/auth/nonce");
     const signature = await signer.signMessage(data.message);
     await axios.post("/api/auth/signin", { signature, message: data.message });
-    console.log("signature", signature);
   };
 
   return (

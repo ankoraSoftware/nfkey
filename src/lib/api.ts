@@ -1,5 +1,6 @@
 import axios, { Axios } from "axios";
 import { Metadata, NftAttributes } from "./db/nft";
+import { ContractDocument } from "./db/contract";
 
 export class Api {
   api: Axios;
@@ -17,6 +18,27 @@ export class Api {
   async me() {
     const res = await this.api.get("/api/auth/me");
     return res.data.user;
+  }
+
+  async getLocks() {
+    const res = await this.api.get("/api/lock");
+    return res.data.lock;
+  }
+  async getLock(id: string) {
+    const res = await this.api.get(`/api/lock/one/${id}`);
+    return res.data.lock;
+  }
+  async createLock(data: any) {
+    const res = await this.api.post("/api/lock/create", data);
+    return res.data.lock;
+  }
+  async updateLock(id: string, data: any) {
+    const res = await this.api.patch(`/api/lock/update/${id}`, data);
+    return res.data.lock;
+  }
+  async deleteLock(id: string) {
+    const res = await this.api.delete(`/api/lock/delete/${id}`);
+    return res.data.lock;
   }
 
   async createNft(data: Metadata) {
@@ -42,6 +64,16 @@ export class Api {
   async deleteNft(id: string) {
     const res = await this.api.delete(`/api/nft/delete/${id}`);
     return res.data;
+  }
+
+
+  async createContract(data: any) {
+    return this.api.post('/api/contract', data)
+  }
+
+  async getContracts(): Promise<ContractDocument[]> {
+    const res = await this.api.get('/api/contract')
+    return res.data
   }
 
   public updateHeaders(key: string, value: string) {
