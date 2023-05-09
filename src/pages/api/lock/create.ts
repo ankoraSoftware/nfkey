@@ -18,6 +18,7 @@ async function handler(req: AuthenticatedRequest, res: NextApiResponse) {
     name: req.body.name,
     type: req.body.type,
     apiKey: hashedApiKey as string,
+    userId: req.body.userId,
   });
   res.status(200).json({ lock });
 }

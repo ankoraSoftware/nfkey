@@ -13,18 +13,20 @@ interface LockFormData {
   name: string;
   type: string;
   apiKey: string;
+  userId: string;
 }
 export enum ELock {
   nuki = "Nuki",
   random = "RandomLock",
 }
 
-export default function Home() {
+export default function Home({ user }: any) {
   const router = useRouter();
   const [formData, setFormData] = useState<LockFormData>({
     name: "",
     type: ELock.nuki,
     apiKey: "",
+    userId: user?._id,
   });
 
   const onSubmit = async () => {
@@ -46,6 +48,8 @@ export default function Home() {
       [name]: value,
     }));
   };
+
+  console.log(user);
 
   return (
     <main
@@ -89,7 +93,7 @@ export default function Home() {
 
           <button
             onClick={onSubmit}
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
           >
             Submit
           </button>
@@ -97,4 +101,17 @@ export default function Home() {
       </div>
     </main>
   );
+}
+
+export async function getServerSideProps({ req }: any) {
+  const auth = req?.cookies?.["auth"];
+  api.updateHeaders("Authorization", auth);
+  let user = {};
+  if (auth) {
+    user = await api.me();
+  }
+
+  return {
+    props: { user },
+  };
 }

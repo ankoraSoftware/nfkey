@@ -4,6 +4,7 @@ interface LockAttributes {
   name: string;
   type: string;
   apiKey: string;
+  userId: string;
 }
 
 interface LockModel extends Model<LockDocument> {}
@@ -12,6 +13,7 @@ export interface LockDocument extends Document, LockAttributes {}
 
 const lockSchema = new Schema<LockDocument, LockModel>({
   name: String,
+  userId: String,
   type: String,
   apiKey: String,
 });
