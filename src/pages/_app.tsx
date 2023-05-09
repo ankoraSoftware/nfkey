@@ -1,6 +1,22 @@
-import '@/styles/globals.css'
-import type { AppProps } from 'next/app'
-
+import { api } from "@/lib/api";
+import "@/styles/globals.css";
+import type { AppContext, AppProps } from "next/app";
 export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+  return <Component {...pageProps} />;
 }
+
+App.getInitialProps = async (appContext: AppContext) => {
+  if (appContext.ctx.req) {
+    api.updateHeaders("cookie", appContext.ctx.req.headers.cookie as string);
+  }
+  let user = null;
+  try {
+    user = await api.me();
+  } catch (e) {}
+
+  return {
+    pageProps: {
+      user,
+    },
+  };
+};
