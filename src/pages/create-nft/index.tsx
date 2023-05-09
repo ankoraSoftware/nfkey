@@ -1,12 +1,9 @@
-import Image from "next/image";
 import { Inter } from "next/font/google";
 import FileUpload from "@/components/FileUpload";
 import { useState } from "react";
 import Input from "@/components/Input";
 import TextArea from "@/components/Textarea";
-import axios from "axios";
 import { Helper } from "@/helpers/helper";
-import router from "next/router";
 import { ContractHelper } from "@/helpers/contract";
 import { api } from "@/lib/api";
 
