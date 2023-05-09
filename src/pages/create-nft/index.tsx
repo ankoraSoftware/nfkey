@@ -1,3 +1,8 @@
+import Select from "@/components/Select";
+import { LockDocument } from "@/lib/db/lock";
+import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import { ethers } from "ethers";
+import { getProvider } from "@/components/Web3modal";
 import Image from 'next/image';
 import { Inter } from 'next/font/google';
 import FileUpload from '@/components/FileUpload';
@@ -18,17 +23,18 @@ interface NftFormData {
   description: string;
   file: File | null;
   supply: number;
+  lockId: string | null
 }
 
-//TO-DO: STAVITI BRAVE DROPDOWN
 
-export default function Home() {
+export default function CreateNFT({locks}: {locks: LockDocument[]}) {
   const [formData, setFormData] = useState<NftFormData>({
     name: '',
     externalLink: '',
     description: '',
     file: null,
     supply: 0,
+    lockId: null,
   });
 
   const handleFileUpload = async (file: File) => {
@@ -46,16 +52,30 @@ export default function Home() {
         name: formData.name,
         description: formData.description,
         external_link: formData.externalLink,
+        lock: formData.lockId
       };
       const hash = await Helper.uploadJsonToIpfs(metadata);
-      const contract = await ContractHelper.init();
-      const tx = await contract.createToken(formData.supply, hash);
-      const nft = await api.createNft(metadata);
-      await tx.wait();
-      //   router.push('/');
-      alert('finito' + JSON.stringify(nft));
+      const {data: artifact} = await axios.get(
+        `https://ipfs.io/ipfs/${process.env.NEXT_PUBLIC_SMART_CONTRACT_ARTIFACT}`
+      );
+      const provider = await getProvider()
+      const signer = await provider.getSigner()
+
+      const abi = artifact['abi'];
+      const bytecode = artifact['evm']['bytecode']['object'];
+      
+      const contractFactory = new ethers.ContractFactory(
+        abi,
+        bytecode,
+        signer
+      );
+
+      const contract = await contractFactory.deploy(formData.name, "", hash);
+      await api.createContract({name: formData.name, metadata, address: contract.address})
+      await contract.deployTransaction.wait();
+      
     } catch (error) {
-      console.error(error);
+      console.error("eeeeee");
       // Handle the error here
     }
   };
@@ -69,7 +89,6 @@ export default function Home() {
     }));
   };
 
-  console.log('formData', formData);
 
   return (
     <main
@@ -90,6 +109,24 @@ export default function Home() {
               name="name"
               value={formData.name}
               onChange={handleFormChange}
+            />
+          </div>
+
+          <div className="w-full">
+            <label className="block text-sm font-medium text-gray-900">
+              Choose lock 
+            </label>
+            <Select
+              options={locks.map((lock) => ({
+                id: lock._id,
+                value: lock.name,
+              }))}
+              value={formData.lockId}
+              containerStyle="bg-gray-800 border rounded-md border-gray-600 hover:border-gray-500 w-full max-w-[150px] lg:min-w-[135px]"
+              selectStyle=""
+              listStyle="text-sm bg-gray-800 border border-gray-600 rounded-md"
+              setValue={(value) => setFormData({ ...formData, lockId: value })}
+              icon={<ChevronDownIcon className="w-4 h-4" />}
             />
           </div>
 
@@ -135,3 +172,18 @@ export default function Home() {
     </main>
   );
 }
+
+export async function getServerSideProps({ req }: any) {
+ 
+  let locks = [];
+  try {
+    locks = await api.getLocks();
+  }catch(e){
+   
+  }
+
+  return {
+    props: { locks },
+  };
+}
+

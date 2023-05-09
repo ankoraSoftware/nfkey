@@ -70,7 +70,7 @@ const Select = ({
               />
             )}
             <p className="font-medium text-gray-300">
-              {typeof value === "string" ? value : value.value}
+              {typeof value === "string" ? value : value?.value}
             </p>
           </span>
           {icon && icon}

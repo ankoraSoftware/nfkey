@@ -17,7 +17,6 @@ export const withAuth =
     // Get the JWT token from the cookie
     const cookies = parseCookies({ req });
     const token = cookies.auth;
-    console.log(token, "TOKEN");
     if (!token) {
       // If the JWT token is not present, return a 401 unauthorized error
       return res

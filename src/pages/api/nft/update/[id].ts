@@ -12,7 +12,6 @@ async function handler(req: AuthenticatedRequest, res: NextApiResponse) {
   await db();
   // Handle the POST request here
   const { id } = req.query;
-  console.log(id, "iddd");
 
   const nft = await Nft.findByIdAndUpdate(id, req.body);
   res.status(200).json({ nft });

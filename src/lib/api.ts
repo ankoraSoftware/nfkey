@@ -1,5 +1,6 @@
 import axios, { Axios } from "axios";
 import { Metadata, NftAttributes } from "./db/nft";
+import { ContractDocument } from "./db/contract";
 
 export class Api {
   api: Axios;
@@ -63,6 +64,16 @@ export class Api {
   async deleteNft(id: string) {
     const res = await this.api.delete(`/api/nft/delete/${id}`);
     return res.data;
+  }
+
+
+  async createContract(data: any) {
+    return this.api.post('/api/contract', data)
+  }
+
+  async getContracts(): Promise<ContractDocument[]> {
+    const res = await this.api.get('/api/contract')
+    return res.data
   }
 
   public updateHeaders(key: string, value: string) {

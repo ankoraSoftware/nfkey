@@ -24,7 +24,6 @@ export default async function handler(
   const wallet = ethers.utils.getAddress(
     await ethSigUtil.recoverPersonalSignature(msgParams)
   );
-  console.log(wallet, "wal");
   let user = await User.findOne({ wallet });
   if (!user)
     user = await User.create({
@@ -35,13 +34,10 @@ export default async function handler(
     process.env.AUTH_SECRET as string,
     { expiresIn: "7d" }
   );
-  console.log(token, "token");
   setCookie({ res }, "auth", token, {
     maxAge: 7 * 24 * 60 * 60,
-    path: "/",
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
   });
 
   res.status(200).json({ message: "Success" });

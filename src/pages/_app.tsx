@@ -22,7 +22,6 @@ App.getInitialProps = async (appContext: AppContext) => {
     user = await api.me();
   } catch (e) {}
 
-  console.log(user);
   return {
     pageProps: {
       user,

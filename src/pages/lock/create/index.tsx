@@ -1,13 +1,8 @@
-import Image from "next/image";
 import { Inter } from "next/font/google";
-import FileUpload from "@/components/FileUpload";
 import { useState } from "react";
 import Input from "@/components/Input";
-import TextArea from "@/components/Textarea";
-import axios from "axios";
-import { Helper } from "@/helpers/helper";
-import router, { useRouter } from "next/router";
-import { ContractHelper } from "@/helpers/contract";
+
+import  { useRouter } from "next/router";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import Select from "@/components/Select";
 import { api } from "@/lib/api";

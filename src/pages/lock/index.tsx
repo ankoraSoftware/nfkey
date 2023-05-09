@@ -69,9 +69,9 @@ const Locks = ({ locks }: any) => {
 };
 
 export async function getServerSideProps({ req }: any) {
-  const auth = req?.cookies?.['auth'];
-  api.updateHeaders('Authorization', auth);
-  let locks = {};
+  const auth = req?.cookies?.["auth"];
+  api.updateHeaders("Authorization", auth);
+  let locks = [];
   if (auth) {
     locks = await api.getLocks();
   }
