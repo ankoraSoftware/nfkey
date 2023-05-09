@@ -2,7 +2,7 @@
 import { AuthenticatedRequest, withAuth } from "@/lib/auth.middleware";
 import Lock from "@/lib/db/lock";
 import db from "@/lib/mongo";
-import * as bcrypt from "bcrypt";
+import CryptoJS from "crypto-js";
 import type { NextApiResponse } from "next";
 
 async function handler(req: AuthenticatedRequest, res: NextApiResponse) {
@@ -12,12 +12,23 @@ async function handler(req: AuthenticatedRequest, res: NextApiResponse) {
   }
   await db();
 
-  const hashedApiKey = await bcrypt.hash(req.body.apiKey, 10);
+  const secretKey = "SecretKey245";
+  const encryptMessage = (text: string) => {
+    return CryptoJS.AES.encrypt(text, secretKey).toString();
+  };
+
+  const decryptMessage = (text: string) => {
+    return CryptoJS.AES.decrypt(text, secretKey).toString(CryptoJS.enc.Utf8);
+  };
+
+  const hashedApiKey = encryptMessage(req.body.apiKey);
+  console.log("encrypt->", hashedApiKey);
+  console.log("decr->", decryptMessage(hashedApiKey));
 
   const lock = await Lock.create({
     name: req.body.name,
     type: req.body.type,
-    apiKey: hashedApiKey as string,
+    apiKey: hashedApiKey,
     userId: req.body.userId,
   });
   res.status(200).json({ lock });

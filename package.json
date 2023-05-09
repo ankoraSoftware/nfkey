@@ -20,7 +20,7 @@
     "@web3modal/react": "^2.3.7",
     "autoprefixer": "10.4.14",
     "axios": "^1.4.0",
-    "bcrypt": "^5.1.0",
+    "crypto-js": "^4.1.1",
     "eslint": "8.39.0",
     "eslint-config-next": "13.3.4",
     "eth-sig-util": "^3.0.1",
@@ -39,7 +39,7 @@
     "web3modal": "^1.9.12"
   },
   "devDependencies": {
-    "@types/bcrypt": "^5.0.0",
+    "@types/crypto-js": "^4.1.1",
     "@types/jsonwebtoken": "^9.0.2"
   }
 }
