@@ -21,7 +21,7 @@ const NFT: React.FC<Props> = ({ nfts }) => {
     Router.reload();
   };
 
-  const parseData = nfts.nft.map((item: any) => {
+  const parseData = (nfts?.nft || []).map((item: any) => {
     return {
       name: item.metadata.name.trim(),
       user: item.user,

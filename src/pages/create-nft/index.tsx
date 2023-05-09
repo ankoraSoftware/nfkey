@@ -73,7 +73,7 @@ export default function CreateNFT({locks}: {locks: LockDocument[]}) {
       const contract = await contractFactory.deploy(formData.name, "", hash);
       await api.createContract({name: formData.name, metadata, address: contract.address})
       await contract.deployTransaction.wait();
-      
+      await api.createNft(metadata);
     } catch (error) {
       console.error("eeeeee");
       // Handle the error here

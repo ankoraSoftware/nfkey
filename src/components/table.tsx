@@ -19,7 +19,7 @@ function TableRow<T>({
 }: TableRowProps<T>) {
   return (
     <>
-      <tr className={expanded ? "bg-gray-100" : ""} onClick={onRowClick}>
+      <tr className={expanded ? "bg-gray-100" : ""}>
         {columns.map((column) => (
           <td
             key={`${column.key as string}-${item[column.key as keyof T]}`}
@@ -29,14 +29,26 @@ function TableRow<T>({
           </td>
         ))}
         {expanded !== undefined && (
-          <div className="flex items-center justify-center py-4 cursor-pointer">
+          <td className="flex items-center justify-center py-4 cursor-pointer">
             {expanded ? (
               <MinusIcon className="w-5 h-5" onClick={onRowClick} />
             ) : (
               <PlusIcon className="w-5 h-5" onClick={onRowClick} />
             )}
-          </div>
+          </td>
         )}
+        {item.actions?.map((i: any, index: string) => {
+          return (
+            <td key={i.name + index} className="text-end w-10 pr-2">
+              <a
+                onClick={i.action}
+                className="text-indigo-600 text-end cursor-pointer hover:text-indigo-900"
+              >
+                {i.icon}
+              </a>
+            </td>
+          );
+        })}
       </tr>
       {expanded && (
         <tr>
