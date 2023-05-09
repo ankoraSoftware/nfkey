@@ -1,4 +1,3 @@
-import { NFT_COLUMNS } from "@/constants/nfts";
 import { api } from "@/lib/api";
 import Router, { useRouter } from "next/router";
 import React, { useState } from "react";
