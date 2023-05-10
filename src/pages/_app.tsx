@@ -6,7 +6,7 @@ import { Toaster } from "react-hot-toast";
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <div className="flex flex-wrap w-full min-w-full pt-4">
-      <Sidebar />
+      <Sidebar user={pageProps.user} />
       <div className="w-full flex-1 mr-3">
         <Component {...pageProps} />
         <Toaster position="bottom-right" />

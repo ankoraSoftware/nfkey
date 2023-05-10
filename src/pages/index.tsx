@@ -22,11 +22,6 @@ export default function Home({ user }: { user: UserDocument }) {
     const signer = provider.getSigner();
     const connectedAddress = await signer.getAddress();
     setAddress(connectedAddress);
-  };
-
-  const test = async () => {
-    const provider = await getProvider();
-    const signer = provider.getSigner();
     const { data } = await axios.get("/api/auth/nonce");
     const signature = await signer.signMessage(data.message);
     await axios.post("/api/auth/signin", { signature, message: data.message });
@@ -34,11 +29,16 @@ export default function Home({ user }: { user: UserDocument }) {
 
   return (
     <main className={` ${inter.className}`}>
-      <button onClick={handleClick}>connect wallet</button>
-      <p>Connected Address: {address}</p>
-
-      <button onClick={test}>test</button>
-      <p>{user?.wallet}</p>
+      {user ? (
+        <p className="text-gray-600">Connected Address: {user?.wallet}</p>
+      ) : (
+        <button
+          className="bg-orange-500 rounded-lg p-2 min-w-[100px] min-h-[50px] hover:bg-orange-400 text-white"
+          onClick={handleClick}
+        >
+          Connect wallet
+        </button>
+      )}
     </main>
   );
 }

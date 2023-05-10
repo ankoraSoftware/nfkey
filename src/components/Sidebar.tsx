@@ -8,9 +8,14 @@ import {
   Squares2X2Icon,
   LockClosedIcon,
   XMarkIcon,
+  UserCircleIcon,
+  ArrowLeftOnRectangleIcon,
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Logo from "../assets/nfkey.png";
+import { getProvider } from "@/components/Web3modal";
+import axios from "axios";
+import Router from "next/router";
 
 const navigation = [
   { name: "Nfts", href: "/nft", icon: Squares2X2Icon },
@@ -21,10 +26,28 @@ function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
 
-const Sidebar = () => {
+const Sidebar = ({ user }: any) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const router = useRouter();
   const currentRoute = router.pathname;
+
+  const handleClick = async () => {
+    const provider = await getProvider();
+    const signer = provider.getSigner();
+    const { data } = await axios.get("/api/auth/nonce");
+    const signature = await signer.signMessage(data.message);
+    await axios.post("/api/auth/signin", { signature, message: data.message });
+    Router.reload();
+  };
+
+  const handleLogout = async () => {
+    try {
+      await axios.delete("/api/auth/logout");
+      Router.reload();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -93,37 +116,64 @@ const Sidebar = () => {
                       />
                       <h3 className="text-orange-500 font-bold ml-2">NFKEY</h3>
                     </div>
-                    <nav className="flex flex-1 flex-col">
-                      <ul role="list" className="flex flex-1 flex-col gap-y-7">
-                        <li>
-                          <ul role="list" className="-mx-2 space-y-1">
-                            {navigation.map((item) => (
-                              <li key={item.name}>
-                                <a
-                                  href={item.href}
+                    <nav className="flex flex-col h-max-[100px]">
+                      <ul role="list" className="flex flex-col gap-y-7">
+                        <ul role="list" className="-mx-2 space-y-1">
+                          {!user ? (
+                            <button
+                              className="bg-orange-500 rounded-lg p-2 hover:bg-orange-400 text-white text-sm"
+                              onClick={handleClick}
+                            >
+                              Connect wallet
+                            </button>
+                          ) : (
+                            <div
+                              className="flex items-center justify-start rounded-lg cursor-pointer p-2 hover:bg-gray-100"
+                              onClick={() => router.push("/")}
+                            >
+                              <UserCircleIcon className="w-7 h-7 text-orange-500" />
+                              <p className="text-black ml-1 text-center text-sm font-semibold">
+                                {`${user?.wallet?.substring(0, 2)}...
+                              ${user?.wallet?.substring(
+                                user?.wallet?.length - 4,
+                                user?.wallet?.length
+                              )}`}
+                              </p>
+                            </div>
+                          )}
+                          {navigation.map((item) => (
+                            <li key={item.name}>
+                              <a
+                                href={item.href}
+                                className={classNames(
+                                  currentRoute === item.href
+                                    ? "bg-gray-50 text-indigo-600"
+                                    : "text-gray-700 hover:text-indigo-600 hover:bg-gray-50",
+                                  "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
+                                )}
+                              >
+                                <item.icon
                                   className={classNames(
                                     currentRoute === item.href
-                                      ? "bg-gray-50 text-indigo-600"
-                                      : "text-gray-700 hover:text-indigo-600 hover:bg-gray-50",
-                                    "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
+                                      ? "text-indigo-600"
+                                      : "text-gray-400 group-hover:text-indigo-600",
+                                    "h-6 w-6 shrink-0"
                                   )}
-                                >
-                                  <item.icon
-                                    className={classNames(
-                                      currentRoute === item.href
-                                        ? "text-indigo-600"
-                                        : "text-gray-400 group-hover:text-indigo-600",
-                                      "h-6 w-6 shrink-0"
-                                    )}
-                                    aria-hidden="true"
-                                  />
-                                  {item.name}
-                                </a>
-                              </li>
-                            ))}
-                          </ul>
-                        </li>
+                                  aria-hidden="true"
+                                />
+                                {item.name}
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
                       </ul>
+                      <div
+                        className="flex items-center hover:text-orange-500 cursor-pointer w-max absolute bottom-5"
+                        onClick={handleLogout}
+                      >
+                        <ArrowLeftOnRectangleIcon className="w-8 h-8 m-2" />
+                        <span>Logout</span>
+                      </div>
                     </nav>
                   </div>
                 </Dialog.Panel>
@@ -136,7 +186,10 @@ const Sidebar = () => {
         <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6">
-            <div className="flex h-16 shrink-0 items-center">
+            <div
+              className="flex h-16 shrink-0 items-center cursor-pointer group"
+              onClick={() => router.push("/")}
+            >
               <Image
                 width={100}
                 height={100}
@@ -144,7 +197,9 @@ const Sidebar = () => {
                 src={Logo}
                 alt="Your Company"
               />
-              <h3 className="text-orange-500 font-bold ml-2">NFKEY</h3>
+              <h3 className="text-orange-500 font-bold ml-2 text-2xl group-hover:text-orange-300">
+                NFKEY
+              </h3>
             </div>
             <nav className="flex flex-1 flex-col">
               <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -177,6 +232,37 @@ const Sidebar = () => {
                   </ul>
                 </li>
               </ul>
+              {!user ? (
+                <button
+                  className="bg-orange-500 rounded-lg p-2 min-w-[100px] min-h-[50px] hover:bg-orange-400 text-white mb-5"
+                  onClick={handleClick}
+                >
+                  Connect wallet
+                </button>
+              ) : (
+                <div className="mb-5 ">
+                  <div
+                    className="flex items-center justify-start rounded-lg hover:bg-gray-100 p-2 cursor-pointer"
+                    onClick={() => router.push("/")}
+                  >
+                    <UserCircleIcon className="w-10 h-10 text-orange-500" />
+                    <p className="text-black ml-2 text-center font-semibold">
+                      {`${user?.wallet?.substring(0, 4)}...
+                        ${user?.wallet?.substring(
+                          user?.wallet?.length - 4,
+                          user?.wallet?.length
+                        )}`}
+                    </p>
+                  </div>
+                  <div
+                    className="flex items-center hover:text-orange-500 cursor-pointer w-max"
+                    onClick={handleLogout}
+                  >
+                    <ArrowLeftOnRectangleIcon className="w-8 h-8 m-2" />
+                    <span>Logout</span>
+                  </div>
+                </div>
+              )}
             </nav>
           </div>
         </div>
@@ -191,16 +277,8 @@ const Sidebar = () => {
             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
           </button>
           <div className="flex-1 text-sm font-semibold leading-6 text-gray-900">
-            Dashboard
+            Navigation
           </div>
-          <a href="#">
-            <span className="sr-only">Your profile</span>
-            <img
-              className="h-8 w-8 rounded-full bg-gray-50"
-              src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-              alt=""
-            />
-          </a>
         </div>
       </div>
     </>
