@@ -1,21 +1,22 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
+import { TrashIcon } from '@heroicons/react/24/outline';
 
 interface FileUploadProps {
   label?: string;
-
-  onChange?: (file: File) => void;
+  onChange?: (file: File | null) => void;
 }
 
 const FileUpload = ({
   label = 'Click to upload',
-
   onChange = () => {},
 }: FileUploadProps) => {
   const [selectedFileName, setSelectedFileName] = useState('');
   const [previewUrl, setPreviewUrl] = useState('');
 
-  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = (
+    event: React.ChangeEvent<HTMLInputElement | null>
+  ) => {
     const file = event.target.files?.[0];
     if (file) {
       onChange(file);
@@ -24,20 +25,35 @@ const FileUpload = ({
     }
   };
 
+  const handleRemoveClick = () => {
+    onChange(null);
+    setSelectedFileName('');
+    setPreviewUrl('');
+  };
+
   return (
     <div className="flex items-center justify-center w-full">
       <label
         htmlFor="dropzone-file"
-        className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50  hover:bg-gray-100"
+        className="flex flex-col relative items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50  hover:bg-gray-100"
       >
+        {previewUrl && (
+          <TrashIcon
+            className="absolute top-2 right-2 w-6 h-6 hover:opacity-75 hover:text-red-700"
+            onClick={(e) => {
+              e.preventDefault();
+              handleRemoveClick();
+            }}
+          />
+        )}
         {previewUrl ? (
           <>
             <Image
-              width="400"
-              height="400"
+              width="128"
+              height="128"
               src={previewUrl}
               alt={selectedFileName}
-              className="h-48 w-full object-cover rounded-lg"
+              className="h-48 w-[128px] min-w-[128px] object-cover mb-4 min-h-[128px] h-[128px] rounded-lg"
             />
             <p className="mb-2 text-sm text-gray-500">{selectedFileName}</p>
           </>

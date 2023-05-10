@@ -1,14 +1,14 @@
-import { Inter } from "next/font/google";
-import { useState } from "react";
-import Input from "@/components/Input";
+import { Inter } from 'next/font/google';
+import { useState } from 'react';
+import Input from '@/components/Input';
 
-import { useRouter } from "next/router";
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
-import Select from "@/components/Select";
-import toast from "react-hot-toast";
-import { api } from "@/lib/api";
+import { useRouter } from 'next/router';
+import { ChevronDownIcon } from '@heroicons/react/24/outline';
+import Select from '@/components/Select';
+import toast from 'react-hot-toast';
+import { api } from '@/lib/api';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 interface LockFormData {
   name: string;
@@ -17,24 +17,24 @@ interface LockFormData {
   userId: string;
 }
 export enum ELock {
-  nuki = "Nuki",
-  random = "RandomLock",
+  nuki = 'Nuki',
+  random = 'RandomLock',
 }
 
 export default function Home({ user }: any) {
   const router = useRouter();
   const [formData, setFormData] = useState<LockFormData>({
-    name: "",
+    name: '',
     type: ELock.nuki,
-    apiKey: "",
+    apiKey: '',
     userId: user?._id,
   });
 
   const onSubmit = async () => {
     try {
       await api.createLock(formData);
-      toast.success("Successfully created lock!");
-      router.push("/lock");
+      toast.success('Successfully created lock!');
+      router.push('/lock');
     } catch (error: any) {
       toast.error(`Error: ${error.message.substring(0, 25)}`);
     }
@@ -54,7 +54,7 @@ export default function Home({ user }: any) {
       className={`max-w-[1440px] min-h-screen  m-auto bg-gray-100 flex  justify-center ${inter.className}`}
     >
       <div className="max-w-[600px] m-auto w-full flex flex-col mt-10 text-orange-500">
-        <h1 className="text-gray-900 text-2xl mb-2">Create Lock</h1>
+        <h1 className=" text-2xl mb-2 text-orange-500 mb-6">Create Lock</h1>
 
         <div className="flex flex-col gap-4">
           <Input
@@ -102,8 +102,8 @@ export default function Home({ user }: any) {
 }
 
 export async function getServerSideProps({ req }: any) {
-  const auth = req?.cookies?.["auth"];
-  api.updateHeaders("Authorization", auth);
+  const auth = req?.cookies?.['auth'];
+  api.updateHeaders('Authorization', auth);
   let user = {};
   if (auth) {
     user = await api.me();
