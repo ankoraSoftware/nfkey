@@ -27,6 +27,9 @@ contract NFKey is Ownable, EIP712("NFKey", "1"), ERC721URIStorage() {
     Counters.Counter private _tokenIds;
      string public sharedMetadata;
 
+    
+    mapping(uint256 => bytes) public tokenSignatures;
+
     constructor(string memory name, string memory symbol, string memory _sharedMetadata) ERC721(name, symbol) {
         sharedMetadata = _sharedMetadata;
     }
@@ -42,6 +45,7 @@ contract NFKey is Ownable, EIP712("NFKey", "1"), ERC721URIStorage() {
         // Mint the tokens
         _mint(msg.sender, newItemId);
         _setTokenURI(newItemId, key.tokenUri);
+        tokenSignatures[newItemId] = key.signature;
     }
 
 

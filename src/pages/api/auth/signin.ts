@@ -37,6 +37,7 @@ export default async function handler(
   setCookie({ res }, "auth", token, {
     maxAge: 7 * 24 * 60 * 60,
     httpOnly: true,
+    path: '/',
     secure: process.env.NODE_ENV === "production",
   });
 

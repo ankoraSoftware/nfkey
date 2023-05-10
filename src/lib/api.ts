@@ -82,6 +82,11 @@ export class Api {
       [key]: value,
     };
   }
+
+  async getContract(id: string) {
+    const res = await this.api.get(`/api/contract/${id}`)
+    return res.data
+  }
 }
 
 export const api = new Api();

@@ -30,11 +30,11 @@ const NFT: React.FC<Props> = ({ nfts }) => {
       image: item.metadata.image.replace("ipfs://", "https://ipfs.io/ipfs/"),
       actions: [
         {
-          name: "Edit",
+          name: "Manage",
           icon: (
             <PencilSquareIcon className="cursor-pointer text-gray-500 w-5 h-5 hover:opacity-75" />
           ),
-          action: () => router.push(`/nft/edit/${item._id}`),
+          action: () => router.push(`/nft/manage/${item._id}`),
         },
         {
           name: "Delete",

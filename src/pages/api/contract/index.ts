@@ -1,10 +1,5 @@
-import User, { UserDocument } from "@/lib/db/user";
 import db from "@/lib/mongo";
-import { NextApiRequest, NextApiResponse } from "next";
-import * as ethSigUtil from "eth-sig-util";
-import {  ethers } from "ethers";
-import * as jwt from "jsonwebtoken";
-import { setCookie } from "nookies";
+import {  NextApiResponse } from "next";
 import { AuthenticatedRequest, withAuth } from "@/lib/auth.middleware";
 import Contract from "@/lib/db/contract";
 
@@ -22,9 +17,6 @@ import Contract from "@/lib/db/contract";
     res.status(200).json({contracts})
     return;
   }
-
-  
-
  
 }
 

@@ -71,7 +71,7 @@ export default function CreateNFT({ locks }: { locks: LockDocument[] }) {
         address: contract.address,
       });
       await contract.deployTransaction.wait();
-      await api.createNft(metadata);
+      await api.createContract({metadata,address: contract.address });
       toast.success("Successfully created nft!");
       router.push("/nft");
     } catch (error: any) {
