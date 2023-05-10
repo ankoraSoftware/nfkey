@@ -1,13 +1,13 @@
-import { Inter } from "next/font/google";
-import { useState } from "react";
-import Input from "@/components/Input";
-import router from "next/router";
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
-import Select from "@/components/Select";
-import { api } from "@/lib/api";
-import toast from "react-hot-toast";
+import { Inter } from 'next/font/google';
+import { useState } from 'react';
+import Input from '@/components/Input';
+import router from 'next/router';
+import { ChevronDownIcon } from '@heroicons/react/24/outline';
+import Select from '@/components/Select';
+import { api } from '@/lib/api';
+import toast from 'react-hot-toast';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 interface LockFormData {
   name: string;
@@ -15,8 +15,8 @@ interface LockFormData {
   apiKey: string;
 }
 export enum ELock {
-  nuki = "Nuki",
-  random = "RandomLock",
+  nuki = 'Nuki',
+  random = 'RandomLock',
 }
 
 export default function EditLock({ lock }: any) {
@@ -29,7 +29,7 @@ export default function EditLock({ lock }: any) {
   const onSubmit = async () => {
     try {
       await api.updateLock(lock._id, formData);
-      toast.success("Successfully updated lock!");
+      toast.success('Successfully updated lock!');
     } catch (error: any) {
       toast.error(`Error: ${error.message.substring(0, 25)}`);
     }
@@ -50,7 +50,7 @@ export default function EditLock({ lock }: any) {
       className={`max-w-[1440px] min-h-screen  m-auto bg-gray-100 flex  justify-center ${inter.className}`}
     >
       <div className="max-w-[600px] m-auto w-full flex flex-col mt-10 text-orange-500">
-        <h1 className="text-gray-900 text-2xl mb-2">Edit Lock</h1>
+        <h1 className=" text-2xl mb-2 text-orange-500 mb-6">Edit lock</h1>
 
         <div className="flex flex-col gap-4">
           <Input
@@ -87,7 +87,7 @@ export default function EditLock({ lock }: any) {
 
           <button
             onClick={onSubmit}
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+            className="text-white bg-orange-500 hover:opacity-75 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
           >
             Submit
           </button>

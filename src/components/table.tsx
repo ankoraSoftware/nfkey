@@ -1,6 +1,6 @@
-import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
-import React, { useState } from "react";
-import Image from "next/image";
+import { MinusIcon, PlusIcon } from '@heroicons/react/24/outline';
+import React, { useState } from 'react';
+import Image from 'next/image';
 
 type TableRowProps<T> = {
   item: T;
@@ -20,7 +20,7 @@ function TableRow<T>({
 }: TableRowProps<T>) {
   return (
     <>
-      <tr className={expanded ? "bg-gray-100" : ""}>
+      <tr className={expanded ? 'bg-gray-100' : ''}>
         {columns.map((column) => (
           <td
             key={`${column.key as string}-${item[column.key as keyof T]}`}
@@ -30,7 +30,7 @@ function TableRow<T>({
           </td>
         ))}
         {expanded !== undefined && (
-          <td className="flex items-center justify-center py-4 cursor-pointer">
+          <td className="text-end w-10 pr-2 cursor-pointer">
             {expanded ? (
               <MinusIcon className="w-5 h-5" onClick={onRowClick} />
             ) : (
@@ -43,7 +43,7 @@ function TableRow<T>({
             <td key={i.name + index} className="text-end w-10 pr-2">
               <a
                 onClick={i.action}
-                className="text-indigo-600 text-end cursor-pointer hover:text-indigo-900"
+                className="text-orange-500 text-end cursor-pointer hover:text-indigo-900"
               >
                 {i.icon}
               </a>
@@ -55,10 +55,16 @@ function TableRow<T>({
         <tr>
           <td colSpan={columns.length + 1}>
             <div className="flex gap-x-2 p-4">
-              <Image src={item.image} alt="cover" width={200} height={200} className="rounded" />
+              <Image
+                src={item.image}
+                alt="cover"
+                width={200}
+                height={200}
+                className="rounded"
+              />
               <div className="flex flex-col">
                 <p className="text-sm font-medium text-orange-500">
-                  Detailed description:{" "}
+                  Detailed description:{' '}
                 </p>
                 <p className="text-sm text-gray-600 min-w-[150px] flex items-center">
                   {item.description}

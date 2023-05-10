@@ -1,8 +1,8 @@
-"use client";
-import { useRouter } from "next/router";
+'use client';
+import { useRouter } from 'next/router';
 
-import { Fragment, useEffect, useState } from "react";
-import { Dialog, Transition } from "@headlessui/react";
+import { Fragment, useEffect, useState } from 'react';
+import { Dialog, Transition } from '@headlessui/react';
 import {
   Bars3Icon,
   Squares2X2Icon,
@@ -10,20 +10,22 @@ import {
   XMarkIcon,
   UserCircleIcon,
   ArrowLeftOnRectangleIcon,
-} from "@heroicons/react/24/outline";
-import Image from "next/image";
-import Logo from "../assets/nfkey.png";
-import { getProvider } from "@/components/Web3modal";
-import axios from "axios";
-import Router from "next/router";
+} from '@heroicons/react/24/outline';
+import Image from 'next/image';
+import Logo from '../assets/nfkey.png';
+import { getProvider } from '@/components/Web3modal';
+import axios from 'axios';
+import Router from 'next/router';
+import toast from 'react-hot-toast';
+import { Helper } from '@/helpers/helper';
 
 const navigation = [
-  { name: "Nfts", href: "/nft", icon: Squares2X2Icon },
-  { name: "Locks", href: "/lock", icon: LockClosedIcon },
+  { name: 'Nfts', href: '/nft', icon: Squares2X2Icon },
+  { name: 'Locks', href: '/lock', icon: LockClosedIcon },
 ];
 
 function classNames(...classes: any) {
-  return classes.filter(Boolean).join(" ");
+  return classes.filter(Boolean).join(' ');
 }
 
 const Sidebar = ({ user }: any) => {
@@ -32,17 +34,26 @@ const Sidebar = ({ user }: any) => {
   const currentRoute = router.pathname;
 
   const handleClick = async () => {
-    const provider = await getProvider();
-    const signer = provider.getSigner();
-    const { data } = await axios.get("/api/auth/nonce");
-    const signature = await signer.signMessage(data.message);
-    await axios.post("/api/auth/signin", { signature, message: data.message });
-    Router.reload();
+    try {
+      const provider = await getProvider();
+      const signer = provider.getSigner();
+      const { data } = await axios.get('/api/auth/nonce');
+      const signature = await signer.signMessage(data.message);
+      await axios.post('/api/auth/signin', {
+        signature,
+        message: data.message,
+      });
+      toast.success('Successfully logged!');
+      Router.reload();
+    } catch (e) {
+      const er = JSON.parse(JSON.stringify(e));
+      toast.error(er.reason);
+    }
   };
 
   const handleLogout = async () => {
     try {
-      await axios.delete("/api/auth/logout");
+      await axios.delete('/api/auth/logout');
       Router.reload();
     } catch (error) {
       console.log(error);
@@ -129,7 +140,7 @@ const Sidebar = ({ user }: any) => {
                           ) : (
                             <div
                               className="flex items-center justify-start rounded-lg cursor-pointer p-2 hover:bg-gray-100"
-                              onClick={() => router.push("/")}
+                              onClick={() => router.push('/')}
                             >
                               <UserCircleIcon className="w-7 h-7 text-orange-500" />
                               <p className="text-black ml-1 text-center text-sm font-semibold">
@@ -147,17 +158,17 @@ const Sidebar = ({ user }: any) => {
                                 href={item.href}
                                 className={classNames(
                                   currentRoute === item.href
-                                    ? "bg-gray-50 text-indigo-600"
-                                    : "text-gray-700 hover:text-indigo-600 hover:bg-gray-50",
-                                  "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
+                                    ? 'bg-gray-50 text-orange-500'
+                                    : 'text-gray-700 hover:text-orange-500 hover:bg-gray-50',
+                                  'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
                                 )}
                               >
                                 <item.icon
                                   className={classNames(
                                     currentRoute === item.href
-                                      ? "text-indigo-600"
-                                      : "text-gray-400 group-hover:text-indigo-600",
-                                    "h-6 w-6 shrink-0"
+                                      ? 'text-orange-500'
+                                      : 'text-gray-400 group-hover:text-orange-500',
+                                    'h-6 w-6 shrink-0'
                                   )}
                                   aria-hidden="true"
                                 />
@@ -188,7 +199,7 @@ const Sidebar = ({ user }: any) => {
           <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6">
             <div
               className="flex h-16 shrink-0 items-center cursor-pointer group"
-              onClick={() => router.push("/")}
+              onClick={() => router.push('/')}
             >
               <Image
                 width={100}
@@ -211,17 +222,17 @@ const Sidebar = ({ user }: any) => {
                           href={item.href}
                           className={classNames(
                             currentRoute === item.href
-                              ? "bg-gray-50 text-indigo-600"
-                              : "text-gray-700 hover:text-indigo-600 hover:bg-gray-50",
-                            "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
+                              ? 'bg-gray-50 text-orange-500'
+                              : 'text-gray-700 hover:text-orange-500 hover:bg-gray-50',
+                            'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
                           )}
                         >
                           <item.icon
                             className={classNames(
                               currentRoute === item.href
-                                ? "text-indigo-600"
-                                : "text-gray-400 group-hover:text-indigo-600",
-                              "h-6 w-6 shrink-0"
+                                ? 'text-orange-500'
+                                : 'text-gray-400 group-hover:text-orange-500',
+                              'h-6 w-6 shrink-0'
                             )}
                             aria-hidden="true"
                           />
@@ -242,23 +253,19 @@ const Sidebar = ({ user }: any) => {
               ) : (
                 <div className="mb-5 ">
                   <div
-                    className="flex items-center justify-start rounded-lg hover:bg-gray-100 p-2 cursor-pointer"
-                    onClick={() => router.push("/")}
+                    className="flex items-center border-b border-gray-300 justify-start p-2"
+                    onClick={() => router.push('/')}
                   >
                     <UserCircleIcon className="w-10 h-10 text-orange-500" />
                     <p className="text-black ml-2 text-center font-semibold">
-                      {`${user?.wallet?.substring(0, 4)}...
-                        ${user?.wallet?.substring(
-                          user?.wallet?.length - 4,
-                          user?.wallet?.length
-                        )}`}
+                      {Helper.walletTruncate(user?.wallet)}
                     </p>
                   </div>
                   <div
-                    className="flex items-center hover:text-orange-500 cursor-pointer w-max"
+                    className="flex items-center hover:text-orange-500 cursor-pointer"
                     onClick={handleLogout}
                   >
-                    <ArrowLeftOnRectangleIcon className="w-8 h-8 m-2" />
+                    <ArrowLeftOnRectangleIcon className="w-8 h-6 m-2" />
                     <span>Logout</span>
                   </div>
                 </div>

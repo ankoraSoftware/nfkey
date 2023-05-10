@@ -49,7 +49,7 @@ export default function Home({
         <p className="text-gray-600">Connected Address: {user?.wallet}</p>
       ) : (
         <button
-          className="bg-orange-500 rounded-lg p-2 min-w-[100px] min-h-[50px] hover:bg-orange-400 text-white"
+          className="bg-orange-500 rounded-lg p-1 min-w-[100px] min-h-[50px] hover:bg-orange-400 text-white"
           onClick={handleClick}
         >
           Connect wallet

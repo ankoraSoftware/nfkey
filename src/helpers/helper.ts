@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { toast } from 'react-hot-toast';
 
 export class Helper {
   private static endpoint = 'https://ipfs.infura.io:5001/api/v0/add';
@@ -26,6 +27,28 @@ export class Helper {
     const result = await response.json();
     return result.Hash;
   }
+
+  public static walletTruncate = (wallet: string) => {
+    const walletSub = `${wallet?.substring(0, 4)}...
+   ${wallet?.substring(wallet?.length - 4, wallet?.length)}`;
+    return walletSub;
+  };
+
+  public static validateWalletAddress = (walletAddress: string) => {
+    const regex = /^(0x)?[0-9a-fA-F]{40}$/i;
+    return regex.test(walletAddress);
+  };
+
+  public static copyToClipboard = (text: string) => {
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        toast.success('Successfully copied to clipboard');
+      })
+      .catch((error) => {
+        toast.error('Something went wrong');
+      });
+  };
 
   public static uploadFileToInfura = async (file: File) => {
     try {
