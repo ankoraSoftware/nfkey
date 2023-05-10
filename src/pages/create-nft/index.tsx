@@ -1,20 +1,20 @@
-import Select from "@/components/Select";
-import { LockDocument } from "@/lib/db/lock";
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
-import { ethers } from "ethers";
-import { Inter } from "next/font/google";
-import FileUpload from "@/components/FileUpload";
-import { useState } from "react";
-import Input from "@/components/Input";
-import TextArea from "@/components/Textarea";
-import axios from "axios";
-import { Helper } from "@/helpers/helper";
-import router from "next/router";
-import { api } from "@/lib/api";
-import toast from "react-hot-toast";
-import { getProvider } from "@/components/Web3Modal";
+import Select from '@/components/Select';
+import { LockDocument } from '@/lib/db/lock';
+import { ChevronDownIcon } from '@heroicons/react/24/outline';
+import { ethers } from 'ethers';
+import { Inter } from 'next/font/google';
+import FileUpload from '@/components/FileUpload';
+import { useState } from 'react';
+import Input from '@/components/Input';
+import TextArea from '@/components/Textarea';
+import axios from 'axios';
+import { Helper } from '@/helpers/helper';
+import router from 'next/router';
+import { api } from '@/lib/api';
+import toast from 'react-hot-toast';
+import { getProvider } from '@/components/Web3Modal';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 interface NftFormData {
   name: string;
@@ -27,9 +27,9 @@ interface NftFormData {
 
 export default function CreateNFT({ locks }: { locks: LockDocument[] }) {
   const [formData, setFormData] = useState<NftFormData>({
-    name: "",
-    externalLink: "",
-    description: "",
+    name: '',
+    externalLink: '',
+    description: '',
     file: null,
     supply: 0,
     lockId: null,
@@ -58,23 +58,18 @@ export default function CreateNFT({ locks }: { locks: LockDocument[] }) {
       );
       const provider = await getProvider();
       const signer = await provider.getSigner();
-
-      const abi = artifact["abi"];
-      const bytecode = artifact["evm"]["bytecode"]["object"];
-
+      const abi = artifact['abi'];
+      const bytecode = artifact['evm']['bytecode']['object'];
       const contractFactory = new ethers.ContractFactory(abi, bytecode, signer);
-
-      const contract = await contractFactory.deploy(formData.name, "", hash);
-      await api.createContract({
-        name: formData.name,
-        metadata,
-        address: contract.address,
-      });
+      const contract = await contractFactory.deploy(formData.name, '', hash);
       await contract.deployTransaction.wait();
-      console.log(provider.network.chainId)
-      await api.createContract({metadata,address: ethers.utils.getAddress(contract.address), chainId: provider.network.chainId });
-      toast.success("Successfully created nft!");
-      router.push("/nft");
+      await api.createContract({
+        metadata,
+        address: ethers.utils.getAddress(contract.address),
+        chainId: provider.network.chainId,
+      });
+      toast.success('Successfully created nft!');
+      router.push('/nft');
     } catch (error: any) {
       toast.error(`Error: ${error.message.substring(0, 25)}`);
     }
@@ -161,9 +156,9 @@ export default function CreateNFT({ locks }: { locks: LockDocument[] }) {
           <button
             onClick={() =>
               toast.promise(onSubmit(), {
-                loading: "Loading...",
-                success: "Successfully processing data...",
-                error: "Error when fetching",
+                loading: 'Loading...',
+                success: 'Successfully processing data...',
+                error: 'Error when fetching',
               })
             }
             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
