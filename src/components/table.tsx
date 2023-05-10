@@ -1,5 +1,6 @@
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
+import Image from "next/image";
 
 type TableRowProps<T> = {
   item: T;
@@ -53,13 +54,16 @@ function TableRow<T>({
       {expanded && (
         <tr>
           <td colSpan={columns.length + 1}>
-            <div className="flex flex-col py-2 border-b border-b-gray-200 px-2">
-              <p className="text-sm font-medium text-orange-500">
-                Detailed description:{" "}
-              </p>
-              <p className="text-sm text-gray-600 min-w-[150px] flex items-center">
-                {item.description}
-              </p>
+            <div className="flex gap-x-2 p-4">
+              <Image src={item.image} alt="cover" width={200} height={200} className="rounded" />
+              <div className="flex flex-col">
+                <p className="text-sm font-medium text-orange-500">
+                  Detailed description:{" "}
+                </p>
+                <p className="text-sm text-gray-600 min-w-[150px] flex items-center">
+                  {item.description}
+                </p>
+              </div>
             </div>
           </td>
         </tr>
