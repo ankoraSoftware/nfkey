@@ -96,6 +96,11 @@ export class Api {
     return res.data;
   }
 
+  async claim(data: any) {
+    const res = await this.api.put(`/api/key-access/claim`, data);
+    return res.data;
+  }
+
   async updateKeyAccess(data: any) {
     const res = await this.api.put(`/api/key-access`, data);
     return res.data;
@@ -103,6 +108,21 @@ export class Api {
 
   async getKeyAccesses(contract: string) {
     const res = await this.api.get(`/api/key-access?contract=${contract}`);
+    return res.data;
+  }
+
+  async getKeyAccess(id: string) {
+    const res = await this.api.get(`/api/key-access/claim?id=${id}`);
+    return res.data;
+  }
+
+  async getWalletNfts() {
+    const res = await this.api.get(`/api/nft/wallet`);
+    return res.data;
+  }
+
+  async unlock(data: any) {
+    const res = await this.api.post(`/api/unlock`, data);
     return res.data;
   }
 }

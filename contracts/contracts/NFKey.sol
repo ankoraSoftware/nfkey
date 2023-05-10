@@ -23,7 +23,11 @@ contract NFKey is Ownable, EIP712, ERC721URIStorage {
     string private constant SIGNING_DOMAIN = "NFKey";
     string private constant SIGNATURE_VERSION = "1";
     
+    mapping(bytes => bool) public usedSignatures;
     mapping(uint256 => bytes) public tokenSignatures;
+
+    mapping(bytes => bool) public blacklistedSignatures;
+
 
     constructor(string memory name, string memory symbol, string memory _sharedMetadata) ERC721(name, symbol) EIP712(SIGNING_DOMAIN, SIGNATURE_VERSION) {
         sharedMetadata = _sharedMetadata;
@@ -33,15 +37,21 @@ contract NFKey is Ownable, EIP712, ERC721URIStorage {
     
 
     function mint(Key calldata key, address receiver, bytes calldata signature) public {
+        require(!blacklistedSignatures[signature]);
+        require(!usedSignatures[signature], "Signature already used");
         address signer = recoverSigner(key, signature);
         require(owner() == signer, "Invalid issuer");
-        _tokenIds.increment();
-
+         _tokenIds.increment();
         uint256 newItemId = _tokenIds.current();
         // Mint the tokens
         _mint(receiver, newItemId);
         _setTokenURI(newItemId, key.tokenUri);
+        usedSignatures[signature] = true;
         tokenSignatures[newItemId] = signature;
+    }
+
+    function revokeAccess(bytes calldata signature) public onlyOwner() {
+        blacklistedSignatures[signature] = true;
     }
 
 

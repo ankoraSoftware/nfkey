@@ -31,6 +31,7 @@
     "jsonwebtoken": "^9.0.0",
     "mongodb": "^5.4.0",
     "mongoose": "^7.1.0",
+    "moralis": "^2.19.1",
     "next": "13.3.4",
     "nookies": "^2.5.2",
     "postcss": "8.4.23",
