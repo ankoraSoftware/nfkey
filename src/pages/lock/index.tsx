@@ -1,16 +1,21 @@
-import React from 'react';
-import { api } from '@/lib/api';
-import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
-import Router, { useRouter } from 'next/router';
-import Table from '@/components/table';
+import React from "react";
+import { api } from "@/lib/api";
+import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { useRouter } from "next/router";
+import Table from "@/components/table";
+import toast from "react-hot-toast";
 
 const Locks = ({ locks }: any) => {
   const router = useRouter();
 
   const deleteLock = async (id: any) => {
-    await api.deleteLock(id as string);
-
-    Router.reload();
+    try {
+      await api.deleteLock(id as string);
+      toast.success("Successfully deleted lock!");
+      router.push("/lock");
+    } catch (error: any) {
+      toast.error(`Error: ${error.message.substring(0, 25)}`);
+    }
   };
 
   const parseData = locks.map((item: any) => {
@@ -19,14 +24,14 @@ const Locks = ({ locks }: any) => {
       type: item.type,
       actions: [
         {
-          name: 'Edit',
+          name: "Edit",
           icon: (
             <PencilSquareIcon className="cursor-pointer text-gray-500 w-5 h-5 hover:opacity-75" />
           ),
           action: () => router.push(`/lock/edit/${item._id}`),
         },
         {
-          name: 'Delete',
+          name: "Delete",
           icon: (
             <TrashIcon className="cursor-pointer text-red-500 w-5 h-5 hover:opacity-75" />
           ),
@@ -50,7 +55,7 @@ const Locks = ({ locks }: any) => {
         </div>
         <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
           <button
-            onClick={() => router.push('/lock/create')}
+            onClick={() => router.push("/lock/create")}
             className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
             Add new lock
@@ -60,8 +65,8 @@ const Locks = ({ locks }: any) => {
       <Table
         data={parseData}
         columns={[
-          { title: 'Name', key: 'name' },
-          { title: 'Type', key: 'type' },
+          { title: "Name", key: "name" },
+          { title: "Type", key: "type" },
         ]}
       />
     </div>

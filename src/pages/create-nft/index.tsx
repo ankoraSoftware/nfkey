@@ -3,7 +3,6 @@ import { LockDocument } from "@/lib/db/lock";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { ethers } from "ethers";
 import { getProvider } from "@/components/Web3modal";
-import Image from "next/image";
 import { Inter } from "next/font/google";
 import FileUpload from "@/components/FileUpload";
 import { useState } from "react";
@@ -12,8 +11,8 @@ import TextArea from "@/components/Textarea";
 import axios from "axios";
 import { Helper } from "@/helpers/helper";
 import router from "next/router";
-import { ContractHelper } from "@/helpers/contract";
 import { api } from "@/lib/api";
+import toast from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -73,9 +72,10 @@ export default function CreateNFT({ locks }: { locks: LockDocument[] }) {
       });
       await contract.deployTransaction.wait();
       await api.createNft(metadata);
-    } catch (error) {
-      console.error("eeeeee");
-      // Handle the error here
+      toast.success("Successfully created nft!");
+      router.push("/nft");
+    } catch (error: any) {
+      toast.error(`Error: ${error.message.substring(0, 25)}`);
     }
   };
   const handleFormChange = (
@@ -158,7 +158,13 @@ export default function CreateNFT({ locks }: { locks: LockDocument[] }) {
           </div>
 
           <button
-            onClick={onSubmit}
+            onClick={() =>
+              toast.promise(onSubmit(), {
+                loading: "Loading...",
+                success: "Successfully processing data...",
+                error: "Error when fetching",
+              })
+            }
             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
           >
             Submit

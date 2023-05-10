@@ -3,6 +3,7 @@ import Router, { useRouter } from "next/router";
 import React, { useState } from "react";
 import Table from "@/components/table";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
+import toast from "react-hot-toast";
 
 type Props = {
   nfts: any;
@@ -12,9 +13,13 @@ const NFT: React.FC<Props> = ({ nfts }) => {
   const router = useRouter();
 
   const deleteNft = async (id: any) => {
-    await api.deleteNft(id as string);
-
-    Router.reload();
+    try {
+      await api.deleteNft(id as string);
+      toast.success("Successfully deleted nft!");
+      router.push("/nft");
+    } catch (error: any) {
+      toast.error(`Error: ${error.message.substring(0, 25)}`);
+    }
   };
 
   const parseData = (nfts?.nft || []).map((item: any) => {

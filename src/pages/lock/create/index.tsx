@@ -5,6 +5,7 @@ import Input from "@/components/Input";
 import { useRouter } from "next/router";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import Select from "@/components/Select";
+import toast from "react-hot-toast";
 import { api } from "@/lib/api";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -32,11 +33,10 @@ export default function Home({ user }: any) {
   const onSubmit = async () => {
     try {
       await api.createLock(formData);
-      alert("Successfully created lock");
+      toast.success("Successfully created lock!");
       router.push("/lock");
-    } catch (error) {
-      console.error(error);
-      // Handle the error here
+    } catch (error: any) {
+      toast.error(`Error: ${error.message.substring(0, 25)}`);
     }
   };
   const handleFormChange = (
@@ -48,8 +48,6 @@ export default function Home({ user }: any) {
       [name]: value,
     }));
   };
-
-  console.log(user);
 
   return (
     <main

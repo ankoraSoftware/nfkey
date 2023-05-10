@@ -1,16 +1,11 @@
-import Image from "next/image";
 import { Inter } from "next/font/google";
-import FileUpload from "@/components/FileUpload";
 import { useState } from "react";
 import Input from "@/components/Input";
-import TextArea from "@/components/Textarea";
-import axios from "axios";
-import { Helper } from "@/helpers/helper";
 import router from "next/router";
-import { ContractHelper } from "@/helpers/contract";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import Select from "@/components/Select";
 import { api } from "@/lib/api";
+import toast from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -34,11 +29,9 @@ export default function EditLock({ lock }: any) {
   const onSubmit = async () => {
     try {
       await api.updateLock(lock._id, formData);
-      alert("Successfully updated lock");
-      router.push("/lock");
-    } catch (error) {
-      console.error(error);
-      // Handle the error here
+      toast.success("Successfully updated lock!");
+    } catch (error: any) {
+      toast.error(`Error: ${error.message.substring(0, 25)}`);
     }
   };
 
