@@ -2,7 +2,6 @@ import Select from "@/components/Select";
 import { LockDocument } from "@/lib/db/lock";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { ethers } from "ethers";
-import { getProvider } from "@/components/Web3modal";
 import { Inter } from "next/font/google";
 import FileUpload from "@/components/FileUpload";
 import { useState } from "react";
@@ -13,6 +12,7 @@ import { Helper } from "@/helpers/helper";
 import router from "next/router";
 import { api } from "@/lib/api";
 import toast from "react-hot-toast";
+import { getProvider } from "@/components/Web3Modal";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -71,7 +71,8 @@ export default function CreateNFT({ locks }: { locks: LockDocument[] }) {
         address: contract.address,
       });
       await contract.deployTransaction.wait();
-      await api.createContract({metadata,address: contract.address });
+      console.log(provider.network.chainId)
+      await api.createContract({metadata,address: ethers.utils.getAddress(contract.address), chainId: provider.network.chainId });
       toast.success("Successfully created nft!");
       router.push("/nft");
     } catch (error: any) {

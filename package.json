@@ -35,6 +35,7 @@
     "nookies": "^2.5.2",
     "postcss": "8.4.23",
     "react": "18.2.0",
+    "react-datepicker": "^4.11.0",
     "react-dom": "18.2.0",
     "react-hot-toast": "^2.4.1",
     "solc": "^0.8.19",
@@ -45,6 +46,7 @@
   },
   "devDependencies": {
     "@types/crypto-js": "^4.1.1",
-    "@types/jsonwebtoken": "^9.0.2"
+    "@types/jsonwebtoken": "^9.0.2",
+    "@types/react-datepicker": "^4.11.2"
   }
 }

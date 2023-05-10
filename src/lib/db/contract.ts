@@ -4,6 +4,7 @@ interface ContractAttributes {
   address: string;
   user: Schema.Types.ObjectId;
   metadata: object;
+  chainId: number;
 }
 
 interface ContractModel extends Model<ContractDocument> {}

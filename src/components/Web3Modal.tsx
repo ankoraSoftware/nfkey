@@ -13,6 +13,7 @@ export const getWeb3Modal = (): Web3Modal => {
         rpc: {
           56: "https://bsc-dataseed.binance.org/",
           97: "https://data-seed-prebsc-1-s1.binance.org:8545/",
+          80001: "https://polygon-testnet.public.blastapi.io/"
         },
         networkId: 56,
       },
