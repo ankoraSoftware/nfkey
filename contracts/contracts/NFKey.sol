@@ -6,8 +6,8 @@ import "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
-contract NFKey is Ownable, EIP712("NFKey", "1"), ERC721URIStorage() {
-
+contract NFKey is Ownable, EIP712, ERC721URIStorage {
+     bytes32 private constant KEY_TYPEHASH = keccak256("Key(string tokenUri,uint256 startTime,uint256 endTime)");
     using Counters for Counters.Counter;
    
 
@@ -15,29 +15,25 @@ contract NFKey is Ownable, EIP712("NFKey", "1"), ERC721URIStorage() {
         string tokenUri;
         uint256 startTime;
         uint256 endTime;
-        bytes signature;
     }
-
-    event CreateToken(
-        uint256 tokenId,
-        uint256 supply,
-        address indexed issuer
-    );
 
     Counters.Counter private _tokenIds;
      string public sharedMetadata;
 
+    string private constant SIGNING_DOMAIN = "NFKey";
+    string private constant SIGNATURE_VERSION = "1";
     
     mapping(uint256 => bytes) public tokenSignatures;
 
-    constructor(string memory name, string memory symbol, string memory _sharedMetadata) ERC721(name, symbol) {
+    constructor(string memory name, string memory symbol, string memory _sharedMetadata) ERC721(name, symbol) EIP712(SIGNING_DOMAIN, SIGNATURE_VERSION) {
         sharedMetadata = _sharedMetadata;
     }
 
+
     
 
-    function mint(Key calldata key, address receiver) public {
-        address signer = recoverKey(key);
+    function mint(Key calldata key, address receiver, bytes calldata signature) public {
+        address signer = recoverSigner(key, signature);
         require(owner() == signer, "Invalid issuer");
         _tokenIds.increment();
 
@@ -45,25 +41,19 @@ contract NFKey is Ownable, EIP712("NFKey", "1"), ERC721URIStorage() {
         // Mint the tokens
         _mint(receiver, newItemId);
         _setTokenURI(newItemId, key.tokenUri);
-        tokenSignatures[newItemId] = key.signature;
+        tokenSignatures[newItemId] = signature;
     }
 
 
 
-    function recoverKey(Key calldata key) public view returns (address) {
-        bytes32 digest = _hashTypedDataV4(
-            keccak256(
-                abi.encode(
-                    keccak256(
-                        "Key(string tokenUri,uint256 startTime,uint256 endTime)"
-                    ),
-                    key.tokenUri,
-                    key.startTime,
-                    key.endTime
-                )
-            )
-        );
-        address signer = ECDSA.recover(digest, key.signature);
+    function getKeyHash(Key memory _key) public pure returns (bytes32) {
+        bytes32 tokenUriHash = keccak256(bytes(_key.tokenUri));
+        return keccak256(abi.encode(KEY_TYPEHASH, tokenUriHash, _key.startTime, _key.endTime));
+    }
+
+    function recoverSigner(Key calldata _key, bytes calldata _signature) public view returns (address) {
+        bytes32 digest = _hashTypedDataV4(getKeyHash(_key));
+        address signer = ECDSA.recover(digest, _signature);
         return signer;
     }
 }

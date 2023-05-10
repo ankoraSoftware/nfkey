@@ -18,6 +18,7 @@ function findImports(relativePath)  {
 const upload = async () => {
 // Read the Solidity smart contract file
 const contractFile = fs.readFileSync('./contracts/contracts/NFKey.sol', 'utf8');
+console.log(contractFile)
 const input = {
     language: 'Solidity',
     sources: {
