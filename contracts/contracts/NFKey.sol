@@ -36,14 +36,14 @@ contract NFKey is Ownable, EIP712("NFKey", "1"), ERC721URIStorage() {
 
     
 
-    function mint(Key calldata key) public {
+    function mint(Key calldata key, address receiver) public {
         address signer = recoverKey(key);
         require(owner() == signer, "Invalid issuer");
         _tokenIds.increment();
 
         uint256 newItemId = _tokenIds.current();
         // Mint the tokens
-        _mint(msg.sender, newItemId);
+        _mint(receiver, newItemId);
         _setTokenURI(newItemId, key.tokenUri);
         tokenSignatures[newItemId] = key.signature;
     }

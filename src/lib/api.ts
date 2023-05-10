@@ -74,7 +74,7 @@ export class Api {
     return this.api.post("/api/contract", data);
   }
 
-  async getContracts(): Promise<ContractDocument[]> {
+  async getContracts(): Promise<{ contracts: ContractDocument[] }> {
     const res = await this.api.get("/api/contract");
     return res.data;
   }
@@ -86,7 +86,7 @@ export class Api {
     };
   }
 
-  async getContract(id: string) {
+  async getContract(id: string): Promise<{ contract: ContractDocument }> {
     const res = await this.api.get(`/api/contract/${id}`);
     return res.data;
   }

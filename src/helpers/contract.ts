@@ -1,15 +1,20 @@
 import { ethers } from 'ethers';
 import { ABI } from './abi';
-import { getProvider } from '@/components/Web3modal';
+import axios from 'axios';
+import { getProvider } from '@/components/Web3Modal';
 
 export class ContractHelper {
-  public static async init() {
+  public static async init(address: string) {
     const provider = await getProvider();
     const signer = await provider.getSigner();
+    const { data: artifact } = await axios.get(
+      `https://ipfs.io/ipfs/${process.env.NEXT_PUBLIC_SMART_CONTRACT_ARTIFACT}`
+    );
 
+    const abi = artifact["abi"];
     const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_NFKEY_CONTRACT_ADDRESS as string,
-      ABI,
+      address,
+      abi,
       signer
     );
     return contract;

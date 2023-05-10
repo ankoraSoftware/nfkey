@@ -4,12 +4,13 @@ import React, { useState } from "react";
 import Table from "@/components/table";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import toast from "react-hot-toast";
+import { ContractDocument } from "@/lib/db/contract";
 
 type Props = {
-  nfts: any;
+  contracts: ContractDocument[];
 };
 
-const NFT: React.FC<Props> = ({ nfts }) => {
+const NFT: React.FC<Props> = ({ contracts }) => {
   const router = useRouter();
 
   const deleteNft = async (id: any) => {
@@ -22,7 +23,7 @@ const NFT: React.FC<Props> = ({ nfts }) => {
     }
   };
 
-  const parseData = (nfts?.nft || []).map((item: any) => {
+  const parseData = (contracts || []).map((item: any) => {
     return {
       name: item.metadata.name.trim(),
       user: item.user,
@@ -82,12 +83,13 @@ export default NFT;
 export async function getServerSideProps({ req }: any) {
   const auth = req?.cookies?.["auth"];
   api.updateHeaders("Authorization", auth);
-  let nfts = {};
+  let contracts: ContractDocument[] = [];
   if (auth) {
-    nfts = await api.getNfts();
+   const contractsRes= await api.getContracts();
+    contracts = contractsRes.contracts;
   }
-
+  console.log(contracts, 'contracts')
   return {
-    props: { nfts },
+    props: { contracts: contracts },
   };
 }
