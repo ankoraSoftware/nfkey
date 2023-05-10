@@ -1,31 +1,31 @@
-import axios, { Axios } from "axios";
-import { Metadata, NftAttributes } from "./db/nft";
-import { ContractDocument } from "./db/contract";
+import axios, { Axios } from 'axios';
+import { Metadata, NftAttributes } from './db/nft';
+import { ContractDocument } from './db/contract';
 
 export class Api {
   api: Axios;
   constructor() {
     this.api = axios.create({
       withCredentials: true,
-      baseURL: "http://localhost:3000",
+      baseURL: 'http://localhost:3000',
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
     });
   }
 
   async me() {
-    const res = await this.api.get("/api/auth/me");
+    const res = await this.api.get('/api/auth/me');
     return res.data.user;
   }
   async logout() {
-    const res = await this.api.delete("/api/auth/logout");
+    const res = await this.api.delete('/api/auth/logout');
     return res.data.message;
   }
 
   async getLocks() {
-    const res = await this.api.get("/api/lock");
+    const res = await this.api.get('/api/lock');
     return res.data.lock;
   }
   async getLock(id: string) {
@@ -33,7 +33,7 @@ export class Api {
     return res.data.lock;
   }
   async createLock(data: any) {
-    const res = await this.api.post("/api/lock/create", data);
+    const res = await this.api.post('/api/lock/create', data);
     return res.data.lock;
   }
   async updateLock(id: string, data: any) {
@@ -46,12 +46,12 @@ export class Api {
   }
 
   async createNft(data: Metadata) {
-    const res = await this.api.post("/api/nft/create", data);
+    const res = await this.api.post('/api/nft/create', data);
     return res.data;
   }
 
   async getNfts() {
-    const res = await this.api.get("/api/nft");
+    const res = await this.api.get('/api/nft');
     return res.data;
   }
 
@@ -71,11 +71,11 @@ export class Api {
   }
 
   async createContract(data: any) {
-    return this.api.post("/api/contract", data);
+    return this.api.post('/api/contract', data);
   }
 
   async getContracts(): Promise<{ contracts: ContractDocument[] }> {
-    const res = await this.api.get("/api/contract");
+    const res = await this.api.get('/api/contract');
     return res.data;
   }
 
@@ -88,6 +88,21 @@ export class Api {
 
   async getContract(id: string): Promise<{ contract: ContractDocument }> {
     const res = await this.api.get(`/api/contract/${id}`);
+    return res.data;
+  }
+
+  async createKeyAccess(data: any) {
+    const res = await this.api.post(`/api/key-access`, data);
+    return res.data;
+  }
+
+  async updateKeyAccess(data: any) {
+    const res = await this.api.put(`/api/key-access`, data);
+    return res.data;
+  }
+
+  async getKeyAccesses(contract: string) {
+    const res = await this.api.get(`/api/key-access?contract=${contract}`);
     return res.data;
   }
 }

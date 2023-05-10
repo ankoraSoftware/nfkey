@@ -61,20 +61,11 @@ export default function CreateNFT({ locks }: { locks: LockDocument[] }) {
       );
       const provider = await getProvider();
       const signer = await provider.getSigner();
-
       const abi = artifact['abi'];
       const bytecode = artifact['evm']['bytecode']['object'];
-
       const contractFactory = new ethers.ContractFactory(abi, bytecode, signer);
-
       const contract = await contractFactory.deploy(formData.name, '', hash);
-      await api.createContract({
-        name: formData.name,
-        metadata,
-        address: contract.address,
-      });
       await contract.deployTransaction.wait();
-      console.log(provider.network.chainId);
       await api.createContract({
         metadata,
         address: ethers.utils.getAddress(contract.address),
