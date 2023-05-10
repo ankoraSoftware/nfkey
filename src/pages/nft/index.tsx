@@ -2,11 +2,7 @@ import { api } from "@/lib/api";
 import Router, { useRouter } from "next/router";
 import React, { useState } from "react";
 import Table from "@/components/table";
-import {
-  PencilSquareIcon,
-  PlusIcon,
-  TrashIcon,
-} from "@heroicons/react/24/outline";
+import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 type Props = {
   nfts: any;
@@ -26,6 +22,7 @@ const NFT: React.FC<Props> = ({ nfts }) => {
       name: item.metadata.name.trim(),
       user: item.user,
       description: item.metadata.description,
+      image: item.metadata.image.replace("ipfs://", "https://ipfs.io/ipfs/"),
       actions: [
         {
           name: "Edit",
