@@ -19,6 +19,10 @@ export class Api {
     const res = await this.api.get("/api/auth/me");
     return res.data.user;
   }
+  async logout() {
+    const res = await this.api.delete("/api/auth/logout");
+    return res.data.message;
+  }
 
   async getLocks() {
     const res = await this.api.get("/api/lock");
@@ -66,14 +70,13 @@ export class Api {
     return res.data;
   }
 
-
   async createContract(data: any) {
-    return this.api.post('/api/contract', data)
+    return this.api.post("/api/contract", data);
   }
 
-  async getContracts(): Promise<{contracts: ContractDocument[]}> {
-    const res = await this.api.get('/api/contract')
-    return res.data
+  async getContracts(): Promise<{ contracts: ContractDocument[] }> {
+    const res = await this.api.get("/api/contract");
+    return res.data;
   }
 
   public updateHeaders(key: string, value: string) {
@@ -83,9 +86,9 @@ export class Api {
     };
   }
 
-  async getContract(id: string): Promise<{contract: ContractDocument}> {
-    const res = await this.api.get(`/api/contract/${id}`)
-    return res.data
+  async getContract(id: string): Promise<{ contract: ContractDocument }> {
+    const res = await this.api.get(`/api/contract/${id}`);
+    return res.data;
   }
 }
 
