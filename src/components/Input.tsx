@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   className?: string;
   label?: string;
 }
 
-const Input = ({ className = "", label = "", ...props }: InputProps) => {
+const Input = ({ className = '', label = '', ...props }: InputProps) => {
   return (
     <div>
       {label && (
@@ -14,7 +14,7 @@ const Input = ({ className = "", label = "", ...props }: InputProps) => {
         </label>
       )}
       <input
-        className={`bg-gray-50 border border-gray-300 text-gray-900 hover:border-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  ${className}`}
+        className={`bg-gray-50 bg-white border border-gray-300 text-gray-900 hover:border-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  ${className}`}
         {...props}
       />
     </div>

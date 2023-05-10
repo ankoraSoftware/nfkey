@@ -26,6 +26,7 @@ interface NftFormData {
 }
 
 export default function CreateNFT({ locks }: { locks: LockDocument[] }) {
+  const [disabledButton, setDisabledButton] = useState(false);
   const [formData, setFormData] = useState<NftFormData>({
     name: '',
     externalLink: '',
@@ -35,7 +36,7 @@ export default function CreateNFT({ locks }: { locks: LockDocument[] }) {
     lockId: null,
   });
 
-  const handleFileUpload = async (file: File) => {
+  const handleFileUpload = async (file: File | null) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
       file: file,
@@ -43,6 +44,8 @@ export default function CreateNFT({ locks }: { locks: LockDocument[] }) {
   };
 
   const onSubmit = async () => {
+    setDisabledButton(true);
+
     try {
       const imageHash = await Helper.uploadFileToInfura(formData.file as File);
       const metadata = {
@@ -73,6 +76,7 @@ export default function CreateNFT({ locks }: { locks: LockDocument[] }) {
     } catch (error: any) {
       toast.error(`Error: ${error.message.substring(0, 25)}`);
     }
+    setDisabledButton(false);
   };
   const handleFormChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -84,12 +88,13 @@ export default function CreateNFT({ locks }: { locks: LockDocument[] }) {
     }));
   };
 
+  console.log('formData', formData);
   return (
     <main
       className={`max-w-[1440px] w-full min-h-screen  m-auto bg-gray-100 flex pb-4 justify-center ${inter.className}`}
     >
       <div className="max-w-[600px] m-auto w-full flex flex-col mt-10 text-orange-500 ">
-        <h1 className="mb-10">Create nft</h1>
+        <h1 className=" text-2xl mb-2 text-orange-500 mb-6">Create NFT</h1>
 
         <div className="flex flex-col gap-6">
           <div className="mb-4">
@@ -154,16 +159,11 @@ export default function CreateNFT({ locks }: { locks: LockDocument[] }) {
           </div>
 
           <button
-            onClick={() =>
-              toast.promise(onSubmit(), {
-                loading: 'Loading...',
-                success: 'Successfully processing data...',
-                error: 'Error when fetching',
-              })
-            }
+            disabled={disabledButton}
+            onClick={onSubmit}
             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
           >
-            Submit
+            {disabledButton ? 'Loading...' : 'Submit'}
           </button>
         </div>
       </div>
