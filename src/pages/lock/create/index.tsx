@@ -2,7 +2,7 @@ import { Inter } from "next/font/google";
 import { useState } from "react";
 import Input from "@/components/Input";
 
-import  { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import Select from "@/components/Select";
 import { api } from "@/lib/api";
@@ -55,7 +55,7 @@ export default function Home({ user }: any) {
     <main
       className={`max-w-[1440px] min-h-screen  m-auto bg-gray-100 flex  justify-center ${inter.className}`}
     >
-      <div className="max-w-[600px] m-auto w-full flex flex-col mt-10">
+      <div className="max-w-[600px] m-auto w-full flex flex-col mt-10 text-orange-500">
         <h1 className="text-gray-900 text-2xl mb-2">Create Lock</h1>
 
         <div className="flex flex-col gap-4">
@@ -67,7 +67,7 @@ export default function Home({ user }: any) {
             onChange={handleFormChange}
           />
           <div className="w-full">
-            <label className="block text-sm font-medium text-gray-900">
+            <label className="block text-sm font-medium">
               Choose lock type
             </label>
             <Select
@@ -76,9 +76,9 @@ export default function Home({ user }: any) {
                 value: type,
               }))}
               value={formData.type}
-              containerStyle="bg-gray-800 border rounded-md border-gray-600 hover:border-gray-500 w-full max-w-[150px] lg:min-w-[135px]"
+              containerStyle="bg-white border rounded-md border-gray-300 hover:border-gray-500 w-full]"
               selectStyle=""
-              listStyle="text-sm bg-gray-800 border border-gray-600 rounded-md"
+              listStyle="text-sm bg-white border border-gray-300 rounded-md"
               setValue={(value) => setFormData({ ...formData, type: value })}
               icon={<ChevronDownIcon className="w-4 h-4" />}
             />

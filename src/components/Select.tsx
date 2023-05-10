@@ -69,7 +69,7 @@ const Select = ({
                 alt="symbol"
               />
             )}
-            <p className="font-medium text-gray-300">
+            <p className="font-medium text-black">
               {typeof value === "string" ? value : value?.value}
             </p>
           </span>
@@ -91,8 +91,8 @@ const Select = ({
                     }
                     setIsOptionsOpen(false);
                   }}
-                  className={`p-2 text-start cursor-pointer hover:bg-gray-500 w-full ${
-                    option.value === value ? "text-blue-300" : ""
+                  className={`p-2 text-start cursor-pointer hover:bg-gray-200 w-full ${
+                    option.value === value ? "text-orange-500" : "text-black"
                   }`}
                 >
                   <span className="flex">

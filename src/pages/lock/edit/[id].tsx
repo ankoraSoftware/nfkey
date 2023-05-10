@@ -1,18 +1,18 @@
-import Image from 'next/image';
-import { Inter } from 'next/font/google';
-import FileUpload from '@/components/FileUpload';
-import { useState } from 'react';
-import Input from '@/components/Input';
-import TextArea from '@/components/Textarea';
-import axios from 'axios';
-import { Helper } from '@/helpers/helper';
-import router from 'next/router';
-import { ContractHelper } from '@/helpers/contract';
-import { ChevronDownIcon } from '@heroicons/react/24/outline';
-import Select from '@/components/Select';
-import { api } from '@/lib/api';
+import Image from "next/image";
+import { Inter } from "next/font/google";
+import FileUpload from "@/components/FileUpload";
+import { useState } from "react";
+import Input from "@/components/Input";
+import TextArea from "@/components/Textarea";
+import axios from "axios";
+import { Helper } from "@/helpers/helper";
+import router from "next/router";
+import { ContractHelper } from "@/helpers/contract";
+import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import Select from "@/components/Select";
+import { api } from "@/lib/api";
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ["latin"] });
 
 interface LockFormData {
   name: string;
@@ -20,8 +20,8 @@ interface LockFormData {
   apiKey: string;
 }
 export enum ELock {
-  nuki = 'Nuki',
-  random = 'RandomLock',
+  nuki = "Nuki",
+  random = "RandomLock",
 }
 
 export default function EditLock({ lock }: any) {
@@ -34,8 +34,8 @@ export default function EditLock({ lock }: any) {
   const onSubmit = async () => {
     try {
       await api.updateLock(lock._id, formData);
-      alert('Successfully updated lock');
-      router.push('/lock');
+      alert("Successfully updated lock");
+      router.push("/lock");
     } catch (error) {
       console.error(error);
       // Handle the error here
@@ -56,7 +56,7 @@ export default function EditLock({ lock }: any) {
     <main
       className={`max-w-[1440px] min-h-screen  m-auto bg-gray-100 flex  justify-center ${inter.className}`}
     >
-      <div className="max-w-[600px] m-auto w-full flex flex-col mt-10">
+      <div className="max-w-[600px] m-auto w-full flex flex-col mt-10 text-orange-500">
         <h1 className="text-gray-900 text-2xl mb-2">Edit Lock</h1>
 
         <div className="flex flex-col gap-4">
@@ -68,7 +68,7 @@ export default function EditLock({ lock }: any) {
             onChange={handleFormChange}
           />
           <div className="w-full">
-            <label className="block text-sm font-medium text-gray-900">
+            <label className="block text-sm font-medium">
               Choose lock type
             </label>
             <Select
@@ -77,9 +77,9 @@ export default function EditLock({ lock }: any) {
                 value: type,
               }))}
               value={formData.type}
-              containerStyle="bg-gray-800 border rounded-md border-gray-600 hover:border-gray-500 w-full max-w-[150px] lg:min-w-[135px]"
+              containerStyle="bg-white border rounded-md border-gray-300 hover:border-gray-500 w-full]"
               selectStyle=""
-              listStyle="text-sm bg-gray-800 border border-gray-600 rounded-md"
+              listStyle="text-sm bg-white border border-gray-300 rounded-md"
               setValue={(value) => setFormData({ ...formData, type: value })}
               icon={<ChevronDownIcon className="w-4 h-4" />}
             />

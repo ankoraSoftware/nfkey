@@ -3,19 +3,19 @@ import { LockDocument } from "@/lib/db/lock";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { ethers } from "ethers";
 import { getProvider } from "@/components/Web3modal";
-import Image from 'next/image';
-import { Inter } from 'next/font/google';
-import FileUpload from '@/components/FileUpload';
-import { useState } from 'react';
-import Input from '@/components/Input';
-import TextArea from '@/components/Textarea';
-import axios from 'axios';
-import { Helper } from '@/helpers/helper';
-import router from 'next/router';
-import { ContractHelper } from '@/helpers/contract';
-import { api } from '@/lib/api';
+import Image from "next/image";
+import { Inter } from "next/font/google";
+import FileUpload from "@/components/FileUpload";
+import { useState } from "react";
+import Input from "@/components/Input";
+import TextArea from "@/components/Textarea";
+import axios from "axios";
+import { Helper } from "@/helpers/helper";
+import router from "next/router";
+import { ContractHelper } from "@/helpers/contract";
+import { api } from "@/lib/api";
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ["latin"] });
 
 interface NftFormData {
   name: string;
@@ -23,15 +23,14 @@ interface NftFormData {
   description: string;
   file: File | null;
   supply: number;
-  lockId: string | null
+  lockId: string | null;
 }
 
-
-export default function CreateNFT({locks}: {locks: LockDocument[]}) {
+export default function CreateNFT({ locks }: { locks: LockDocument[] }) {
   const [formData, setFormData] = useState<NftFormData>({
-    name: '',
-    externalLink: '',
-    description: '',
+    name: "",
+    externalLink: "",
+    description: "",
     file: null,
     supply: 0,
     lockId: null,
@@ -52,26 +51,26 @@ export default function CreateNFT({locks}: {locks: LockDocument[]}) {
         name: formData.name,
         description: formData.description,
         external_link: formData.externalLink,
-        lock: formData.lockId
+        lock: formData.lockId,
       };
       const hash = await Helper.uploadJsonToIpfs(metadata);
-      const {data: artifact} = await axios.get(
+      const { data: artifact } = await axios.get(
         `https://ipfs.io/ipfs/${process.env.NEXT_PUBLIC_SMART_CONTRACT_ARTIFACT}`
       );
-      const provider = await getProvider()
-      const signer = await provider.getSigner()
+      const provider = await getProvider();
+      const signer = await provider.getSigner();
 
-      const abi = artifact['abi'];
-      const bytecode = artifact['evm']['bytecode']['object'];
-      
-      const contractFactory = new ethers.ContractFactory(
-        abi,
-        bytecode,
-        signer
-      );
+      const abi = artifact["abi"];
+      const bytecode = artifact["evm"]["bytecode"]["object"];
+
+      const contractFactory = new ethers.ContractFactory(abi, bytecode, signer);
 
       const contract = await contractFactory.deploy(formData.name, "", hash);
-      await api.createContract({name: formData.name, metadata, address: contract.address})
+      await api.createContract({
+        name: formData.name,
+        metadata,
+        address: contract.address,
+      });
       await contract.deployTransaction.wait();
       await api.createNft(metadata);
     } catch (error) {
@@ -88,7 +87,6 @@ export default function CreateNFT({locks}: {locks: LockDocument[]}) {
       [name]: value,
     }));
   };
-
 
   return (
     <main
@@ -113,18 +111,16 @@ export default function CreateNFT({locks}: {locks: LockDocument[]}) {
           </div>
 
           <div className="w-full">
-            <label className="block text-sm font-medium text-gray-900">
-              Choose lock 
-            </label>
+            <label className="block text-sm font-medium">Choose lock</label>
             <Select
               options={locks.map((lock) => ({
                 id: lock._id,
                 value: lock.name,
               }))}
               value={formData.lockId}
-              containerStyle="bg-gray-800 border rounded-md border-gray-600 hover:border-gray-500 w-full max-w-[150px] lg:min-w-[135px]"
+              containerStyle="bg-white border rounded-md border-gray-300 hover:border-gray-500 w-full]"
               selectStyle=""
-              listStyle="text-sm bg-gray-800 border border-gray-600 rounded-md"
+              listStyle="text-sm bg-white border border-gray-300 rounded-md"
               setValue={(value) => setFormData({ ...formData, lockId: value })}
               icon={<ChevronDownIcon className="w-4 h-4" />}
             />
@@ -174,16 +170,12 @@ export default function CreateNFT({locks}: {locks: LockDocument[]}) {
 }
 
 export async function getServerSideProps({ req }: any) {
- 
   let locks = [];
   try {
     locks = await api.getLocks();
-  }catch(e){
-   
-  }
+  } catch (e) {}
 
   return {
     props: { locks },
   };
 }
-
