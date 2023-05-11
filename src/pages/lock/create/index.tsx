@@ -7,14 +7,16 @@ import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import Select from '@/components/Select';
 import toast from 'react-hot-toast';
 import { api } from '@/lib/api';
+import { LockHelper } from '@/lib/locks/locks';
 
 const inter = Inter({ subsets: ['latin'] });
 
 interface LockFormData {
   name: string;
-  type: string;
+  type: ELock;
   apiKey: string;
   userId: string;
+  metadata: any;
 }
 export enum ELock {
   nuki = 'Nuki',
@@ -23,12 +25,23 @@ export enum ELock {
 
 export default function Home({ user }: any) {
   const router = useRouter();
+  const [locks, setLocks] = useState<any[]>([]);
   const [formData, setFormData] = useState<LockFormData>({
     name: '',
     type: ELock.nuki,
     apiKey: '',
     userId: user?._id,
+    metadata: null,
   });
+
+  const getLocks = async () => {
+    const lockHelper = new LockHelper(formData.type, formData.apiKey);
+    if (lockHelper.lock) {
+      const locks = await lockHelper.lock.getLocks();
+      setLocks([...locks]);
+      console.log(locks, 'locks');
+    }
+  };
 
   const onSubmit = async () => {
     try {
@@ -89,6 +102,22 @@ export default function Home({ user }: any) {
             onChange={handleFormChange}
           />
 
+          <button
+            onClick={getLocks}
+            className="text-white bg-orange-500 hover:opacity-75 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+          >
+            Get Locks
+          </button>
+          {locks.map((l) => {
+            return (
+              <div
+                key={l.id}
+                onClick={() => setFormData({ ...formData, metadata: l })}
+              >
+                {l.name}
+              </div>
+            );
+          })}
           <button
             onClick={onSubmit}
             className="text-white bg-orange-500 hover:opacity-75 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
