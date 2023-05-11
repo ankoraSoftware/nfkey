@@ -5,6 +5,10 @@ import { ethers } from 'ethers';
 import type { NextApiResponse } from 'next';
 import * as ethSigUtil from 'eth-sig-util';
 import KeyAccess from '@/lib/db/key-access';
+import Lock from '@/lib/db/lock';
+import { LockHelper } from '@/lib/locks/locks';
+import { ELock } from '@/pages/lock/create';
+import CryptoJS from 'crypto-js';
 
 async function handler(req: AuthenticatedRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
@@ -88,6 +92,28 @@ async function handler(req: AuthenticatedRequest, res: NextApiResponse) {
     canUnlock = true;
   }
   if (!canUnlock) throw new Error('Unable to unlock');
+
+  //@ts-ignore
+  const lockId = contract.metadata.lock;
+
+  const lock = await Lock.findById(lockId);
+  if (!lock) throw new Error('');
+  const apiKey = CryptoJS.AES.decrypt(lock?.apiKey, 'SecretKey245').toString(
+    CryptoJS.enc.Utf8
+  );
+
+  const lockHelper = new LockHelper(lock.type as ELock, apiKey);
+  //@ts-ignore
+  const lockData = await lockHelper.lock?.getLock(lock.metadata.id);
+  const lockStatus = lockData?.data.state.state;
+  console.log(lockData?.data.state);
+
+  if (lockStatus === 3 || lockStatus === 5)
+    //@ts-ignore
+    await lockHelper.lock?.lock(lock.metadata.id);
+  else if (lockStatus === 1)
+    //@ts-ignore
+    await lockHelper.lock?.unlock(lock.metadata.id);
   // TODO recover signature
   console.log({ canUnlock });
   res.status(200).send({ canUnlock });

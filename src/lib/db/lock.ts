@@ -1,10 +1,11 @@
-import { Schema, model, models, Model, Document } from "mongoose";
+import { Schema, model, models, Model, Document } from 'mongoose';
 
 interface LockAttributes {
   name: string;
   type: string;
   apiKey: string;
   userId: string;
+  metadata: object;
 }
 
 interface LockModel extends Model<LockDocument> {}
@@ -16,9 +17,10 @@ const lockSchema = new Schema<LockDocument, LockModel>({
   userId: String,
   type: String,
   apiKey: String,
+  metadata: Object,
 });
 
 const Lock: LockModel =
-  models.Lock || model<LockDocument, LockModel>("Lock", lockSchema);
+  models.Lock || model<LockDocument, LockModel>('Lock', lockSchema);
 
 export default Lock;

@@ -16,7 +16,6 @@ export default function Home({
   nfts: any[];
 }) {
   const [address, setAddress] = useState<string>('');
-  console.log(nfts, 'NFTs');
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const cachedProvider = localStorage.getItem('account') ?? '';
@@ -63,7 +62,7 @@ export default function Home({
           {nfts.map((nft) => {
             return (
               <div key={nft.token_hash}>
-                <p> Name: {nft.contract.metadata.name}</p>
+                <p> Name: {nft.contract?.metadata?.name}</p>
                 <button onClick={() => unlock(nft)}>Unlock</button>
               </div>
             );
