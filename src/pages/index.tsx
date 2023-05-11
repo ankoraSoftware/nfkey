@@ -63,7 +63,12 @@ export default function Home({
             return (
               <div key={nft.token_hash}>
                 <p> Name: {nft.contract?.metadata?.name}</p>
-                <button onClick={() => unlock(nft)}>Unlock</button>
+                <button
+                  className="bg-orange-500 rounded-lg p-1 min-w-[150px] min-h-[50px] hover:bg-orange-400 text-white mt-3"
+                  onClick={() => unlock(nft)}
+                >
+                  Unlock
+                </button>
               </div>
             );
           })}

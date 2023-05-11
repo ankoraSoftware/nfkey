@@ -6,14 +6,16 @@ import { api } from '@/lib/api';
 import { ContractDocument } from '@/lib/db/contract';
 
 import 'react-datepicker/dist/react-datepicker.css';
-import { CheckIcon } from '@heroicons/react/24/outline';
+import { CheckIcon, PencilSquareIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import { toast } from 'react-hot-toast';
 import { KeyAccessDocument } from '@/lib/db/key-access';
 import { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import Tabs from '@/components/Tabs/Tabs';
+import Tabs from '@/components/Tabs';
+import Table from '@/components/table';
+import { useRouter } from 'next/router';
 
 interface NftValue {
   from: null | Date;
@@ -40,6 +42,7 @@ const ManageNft = ({
   keyAccesses: KeyAccessDocument[];
 }) => {
   console.log(keyAccesses, 'ads');
+  const router = useRouter();
   const [nft, setNft] = useState<NftValue>({
     from: null,
     to: null,
@@ -138,6 +141,15 @@ const ManageNft = ({
     }
   };
 
+  const parseData = keyAccesses.map((item: any) => {
+    return {
+      signature: Helper.shortenAddress(item?.signature),
+      startTime: item?.startTime,
+      endTime: item?.endTime,
+      tokenUri: Helper.shortenAddress(item?.tokenUri),
+    };
+  });
+
   // TABS
   const TABS = [
     {
@@ -193,7 +205,7 @@ const ManageNft = ({
                   <DatePicker
                     disabled={unlimitedAccess}
                     placeholderText={unlimitedAccess ? 'Today' : '05/26/2024'}
-                    className="bg-gray-50 bg-white border border-gray-300 text-gray-900 hover:border-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 disabled:pointer-events-none"
+                    className="bg-white border border-gray-300 text-gray-900 hover:border-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 disabled:pointer-events-none"
                     selected={nft.from}
                     onChange={(date) => setNft({ ...nft, from: date })}
                   />
@@ -291,38 +303,15 @@ const ManageNft = ({
       name: 'Key Access Details',
       component: (
         <div className="pb-[40px] w-full">
-          {keyAccesses.map((access) => {
-            return (
-              <div key={access._id} className="flex flex-col gap-2 text-base">
-                <div>
-                  {access?.owner ? (
-                    <div>
-                      {' '}
-                      <span className="font-semibold text-lg">{`Owners: `}</span>
-                      {access?.owner}
-                    </div>
-                  ) : (
-                    <span className="font-semibold text-lg">No owners</span>
-                  )}{' '}
-                </div>
-                <div>
-                  <span className="font-semibold text-lg">Signature:</span>{' '}
-                  {Helper.shortenAddress(access?.signature)}
-                </div>
-                <div>
-                  {' '}
-                  <span className="font-semibold text-lg">
-                    Start time:
-                  </span>{' '}
-                  {access?.startTime}{' '}
-                </div>
-                <div>
-                  <span className="font-semibold text-lg">End time:</span>{' '}
-                  {access?.startTime}{' '}
-                </div>
-              </div>
-            );
-          })}
+          <Table
+            data={parseData}
+            columns={[
+              { title: 'Signature', key: 'signature' },
+              { title: 'Start Time', key: 'startTime' },
+              { title: 'End Time', key: 'endTime' },
+              { title: 'Token Uri', key: 'tokenUri' },
+            ]}
+          />
         </div>
       ),
     },
