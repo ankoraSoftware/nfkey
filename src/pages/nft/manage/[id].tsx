@@ -159,7 +159,7 @@ const ManageNft = ({
   const TABS = [
     {
       id: 'drop',
-      name: 'Drop Nft',
+      name: 'Send NFT',
       component: (
         <>
           <div className="flex gap-4 mt-10 ">
@@ -305,7 +305,7 @@ const ManageNft = ({
     },
     {
       id: 'keyAccess',
-      name: 'Key Access Details',
+      name: "NFT's Details",
       component: (
         <div className="pb-[40px] w-full">
           <Table

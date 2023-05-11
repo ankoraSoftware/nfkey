@@ -85,10 +85,10 @@ export default function Home({
                       {nft.contract?.metadata?.name}
                     </p>
                     <p className="text-sm font-medium">
-                      Owner of: {Helper.shortenAddress(nft?.owner_of)}
+                      Lock Name: {nft.contract.metadata.lock.substring(0, 15)}
                     </p>
                     <button
-                      className="bg-orange-500 rounded-lg p-1 min-w-[150px] min-h-[50px] hover:bg-orange-400 text-white mt-3"
+                      className="bg-orange-500 rounded-lg p-1 min-w-[150px] min-h-[50px] hover:bg-orange-400 text-white mt-2"
                       onClick={() => unlock(nft)}
                     >
                       Unlock
