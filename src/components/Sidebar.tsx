@@ -180,13 +180,15 @@ const Sidebar = ({ user }: any) => {
                           ))}
                         </ul>
                       </ul>
-                      <div
-                        className="flex items-center hover:text-orange-500 cursor-pointer w-max absolute bottom-5"
-                        onClick={handleLogout}
-                      >
-                        <ArrowLeftOnRectangleIcon className="w-8 h-8 m-2" />
-                        <span>Logout</span>
-                      </div>
+                      {user && (
+                        <div
+                          className="flex items-center hover:text-orange-500 cursor-pointer w-max absolute bottom-5"
+                          onClick={handleLogout}
+                        >
+                          <ArrowLeftOnRectangleIcon className="w-8 h-8 m-2" />
+                          <span>Logout</span>
+                        </div>
+                      )}
                     </nav>
                   </div>
                 </Dialog.Panel>
