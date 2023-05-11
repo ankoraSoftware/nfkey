@@ -48,7 +48,10 @@ export default function Home({
   return (
     <main className={` ${inter.className}`}>
       {user ? (
-        <p className="text-gray-600">Connected Address: {user?.wallet}</p>
+        <p className="text-orange-500 p-2">
+          <span className="text-gray-500">Connected Address:</span>{' '}
+          {Helper.shortenAddress(user?.wallet)}
+        </p>
       ) : (
         <button
           className="bg-orange-500 rounded-lg p-1 min-w-[100px] min-h-[50px] hover:bg-orange-400 text-white"

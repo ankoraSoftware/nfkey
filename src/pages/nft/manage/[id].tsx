@@ -158,13 +158,13 @@ const ManageNft = ({
   // TABS
   const TABS = [
     {
-      id: 'drop',
+      id: 'sendNft',
       name: 'Send NFT',
       component: (
-        <>
-          <div className="flex gap-4 mt-10 ">
+        <div className="px-4 md:px-0 mt-5">
+          <div className="flex gap-4">
             <Image
-              className="rounded-[8px] w-[256px] h-[256px] object-cover"
+              className="rounded-md w-[256px] h-[256px] object-cover"
               width={256}
               height={256}
               src={contract.metadata.image.replace(
@@ -174,7 +174,7 @@ const ManageNft = ({
               alt="image"
             />
             <div className="flex flex-col max-w-[600px]">
-              <h1 className="text-orange-500 text-xl -mt-1 mb-1">
+              <h1 className="text-orange-500 text-xl  mb-1">
                 {contract.metadata.name}
               </h1>
               <div className="flex items-center gap-4 mb-2">
@@ -300,14 +300,14 @@ const ManageNft = ({
               )}
             </div>
           </div>
-        </>
+        </div>
       ),
     },
     {
-      id: 'keyAccess',
+      id: 'nftDetails',
       name: "NFT's Details",
       component: (
-        <div className="pb-[40px] w-full">
+        <div className="w-full px-4 md:px-0">
           <Table
             isExpandable={false}
             data={keyAccessData}
@@ -325,7 +325,7 @@ const ManageNft = ({
   const [activeTab, setActiveTab] = useState(TABS[0].name);
 
   return (
-    <div className="flex items-start flex-col justify-center gap-2 w-full max-w-[900px] ml-14">
+    <div className="flex items-start flex-col justify-center gap-2 w-full max-w-[900px] ml-2 md:ml-14">
       <Tabs tabs={TABS} activeTab={activeTab} setActiveTab={setActiveTab} />
       <div className="w-full">
         {TABS.map((tab, i) => {
