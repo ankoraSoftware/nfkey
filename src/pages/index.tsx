@@ -67,7 +67,7 @@ export default function Home({
               return (
                 <div
                   key={nft.token_hash}
-                  className="w-[250px] bg-gray-200 rounded-md overflow-hidden"
+                  className="flex flex-col items-center w-[280px] bg-gray-100 rounded-md overflow-hidden"
                 >
                   <Image
                     width={500}
@@ -78,14 +78,14 @@ export default function Home({
                       'https://ipfs.io/ipfs/'
                     )}
                     alt="Img"
-                    className="w-full h-[250px]"
+                    className="w-[90%] h-[250px] mt-3 rounded-md object-cover"
                   />
-                  <div className="p-2">
+                  <div className="w-full lex flex-col justify-start p-4">
                     <p className="text-base font-medium">
                       {nft.contract?.metadata?.name}
                     </p>
-                    <p className="text-sm font-medium">
-                      Lock Name: {nft.contract.metadata.lock.substring(0, 15)}
+                    <p className="text-sm font-medium text-gray-500">
+                      {nft.contract.metadata.lock.substring(0, 15)}
                     </p>
                     <button
                       className="bg-orange-500 rounded-lg p-1 min-w-[150px] min-h-[50px] hover:bg-orange-400 text-white mt-2"
