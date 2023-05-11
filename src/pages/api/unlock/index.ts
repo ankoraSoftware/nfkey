@@ -103,9 +103,17 @@ async function handler(req: AuthenticatedRequest, res: NextApiResponse) {
   );
 
   const lockHelper = new LockHelper(lock.type as ELock, apiKey);
-
   //@ts-ignore
-  await lockHelper.lock?.lock(lock.metadata.id);
+  const lockData = await lockHelper.lock?.getLock(lock.metadata.id);
+  const lockStatus = lockData?.data.state.state;
+  console.log(lockData?.data.state);
+
+  if (lockStatus === 3 || lockStatus === 5)
+    //@ts-ignore
+    await lockHelper.lock?.lock(lock.metadata.id);
+  else if (lockStatus === 1)
+    //@ts-ignore
+    await lockHelper.lock?.unlock(lock.metadata.id);
   // TODO recover signature
   console.log({ canUnlock });
   res.status(200).send({ canUnlock });

@@ -31,4 +31,12 @@ export class Nuki {
   async lock(lockId: string) {
     return this.api.post(`smartlock/${lockId}/action/lock`);
   }
+
+  async unlock(lockId: string) {
+    return this.api.post(`smartlock/${lockId}/action/unlock`);
+  }
+
+  async getLock(lockId: string) {
+    return this.api.get(`smartlock/${lockId}`);
+  }
 }
