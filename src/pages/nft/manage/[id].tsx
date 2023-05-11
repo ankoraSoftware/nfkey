@@ -16,6 +16,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import Tabs from '@/components/Tabs';
 import Table from '@/components/table';
 import { useRouter } from 'next/router';
+import { format } from 'date-fns';
 
 interface NftValue {
   from: null | Date;
@@ -141,12 +142,16 @@ const ManageNft = ({
     }
   };
 
-  const parseData = keyAccesses.map((item: any) => {
+  const keyAccessData = keyAccesses.map((item: any) => {
     return {
-      signature: Helper.shortenAddress(item?.signature),
-      startTime: item?.startTime,
-      endTime: item?.endTime,
-      tokenUri: Helper.shortenAddress(item?.tokenUri),
+      owner: Helper.shortenAddress(item?.owner) || 'No owner',
+      startTime: item?.startTime
+        ? format(new Date(item?.startTime), 'MM/dd/yyyy')
+        : 'Life time access',
+      endTime: item?.endTime
+        ? format(new Date(item?.endTime), 'MM/dd/yyyy')
+        : 'Life time access',
+      userId: Helper.shortenAddress(item?.user),
     };
   });
 
@@ -222,7 +227,7 @@ const ManageNft = ({
                     placeholderText={
                       unlimitedAccess ? 'Unlimited' : '06/17/2024'
                     }
-                    className="bg-gray-50 bg-white border border-gray-300 text-gray-900 hover:border-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 disabled:pointer-events-none"
+                    className="bg-white border border-gray-300 text-gray-900 hover:border-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 disabled:pointer-events-none"
                     selected={nft.to}
                     onChange={(date) => setNft({ ...nft, to: date })}
                   />
@@ -304,12 +309,13 @@ const ManageNft = ({
       component: (
         <div className="pb-[40px] w-full">
           <Table
-            data={parseData}
+            isExpandable={false}
+            data={keyAccessData}
             columns={[
-              { title: 'Signature', key: 'signature' },
+              { title: 'Owner', key: 'owner' },
               { title: 'Start Time', key: 'startTime' },
               { title: 'End Time', key: 'endTime' },
-              { title: 'Token Uri', key: 'tokenUri' },
+              { title: 'User Id', key: 'userId' },
             ]}
           />
         </div>
