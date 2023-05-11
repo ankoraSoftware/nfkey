@@ -64,7 +64,7 @@ const Sidebar = ({ user }: any) => {
 
   return (
     <>
-      <div className="w-full lg:w-[300px] relative">
+      <div className="lg:w-[300px] w-full relative">
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog
             as="div"

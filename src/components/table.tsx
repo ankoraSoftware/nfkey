@@ -22,7 +22,9 @@ function TableRow<T>({
 }: TableRowProps<T>) {
   return (
     <>
-      <tr className={expanded ? 'bg-gray-100' : ''}>
+      <tr
+        className={expanded ? 'bg-gray-100' : '[&:nth-child(2n)]:bg-gray-200'}
+      >
         {columns.map((column) => (
           <td
             key={`${column.key as string}-${item[column.key as keyof T]}`}

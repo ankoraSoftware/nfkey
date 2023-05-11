@@ -4,7 +4,7 @@ import { ContractHelper } from '@/helpers/contract';
 import { Helper } from '@/helpers/helper';
 import { api } from '@/lib/api';
 import { ContractDocument } from '@/lib/db/contract';
-
+import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
 import 'react-datepicker/dist/react-datepicker.css';
 import { CheckIcon, PencilSquareIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
@@ -143,23 +143,31 @@ const ManageNft = ({
   };
 
   const keyAccessData = keyAccesses.map((item: any) => {
+    console.log('item', item);
+    const startTime =
+      item?.startTime && format(new Date(item?.startTime), 'dd. MMMM yyyy');
+
+    const endTime =
+      item?.endTime && format(new Date(item?.endTime), 'dd. MMMM yyyy');
+
     return {
-      owner: Helper.shortenAddress(item?.owner) || 'No owner',
-      startTime: item?.startTime
-        ? format(new Date(item?.startTime), 'MM/dd/yyyy')
-        : 'Life time access',
-      endTime: item?.endTime
-        ? format(new Date(item?.endTime), 'MM/dd/yyyy')
-        : 'Life time access',
+      active: item.owner ? 'Activated' : 'Not activated',
+      time: `${startTime ? startTime + ' - ' + endTime : 'Lifetime'} `,
       userId: Helper.shortenAddress(item?.user),
+      ownerAddress: item?.owner ? Helper.walletTruncate(item?.owner) : 'N/A',
+      test: item.owner ? (
+        <Jazzicon diameter={30} seed={jsNumberForAddress(item?.owner)} />
+      ) : (
+        <div className="w-[30px] h-[30px] rounded-full bg-red-900" />
+      ),
     };
   });
 
   // TABS
   const TABS = [
     {
-      id: 'sendNft',
-      name: 'Send NFT',
+      id: 'drop',
+      name: 'Give access',
       component: (
         <div className="px-4 md:px-0 md:pr-2 pb-10 mt-5">
           <div className="flex flex-col lg:flex-row gap-4">
@@ -199,8 +207,14 @@ const ManageNft = ({
             </div>
           </div>
 
-          <div className="w-full mt-4 ">
-            <h2 className="text-orange-500 font-bold text-[22px]">Drop NFT</h2>
+          <div className=" w-full mt-8">
+            <h2 className="text-orange-500 font-bold text-[22px]">
+              NFT Access Control System{' '}
+            </h2>
+
+            <p className="text-gray-700 font-bold  text-sm">
+              Grant access to the door by sending an NFT
+            </p>
             <div className="flex flex-col gap-4">
               <div className="flex flex-col md:flex-row items-center gap-4 mt-5">
                 <div className="w-full">
@@ -292,14 +306,17 @@ const ManageNft = ({
               </div>
 
               {link && (
-                <div className="w-full flex items-center justify-center mt-10">
+                <div className="w-full group flex flex-col items-center justify-center mt-6">
                   <button
                     disabled={!unlimitedAccess && (!nft.from || !nft.to)}
-                    className="border bg-white text-orange-500 border-orange-500 rounded-lg p-1 w-[350px] min-h-[40px] hover:opacity-75 disabled:border-gray-300 disabled:text-gray-500 disabled:hover:opacity-100"
+                    className="border z-10 relative bg-white text-orange-500 border-orange-500 rounded-lg p-1 w-[350px] min-h-[40px] hover:opacity-75 disabled:border-gray-300 disabled:text-gray-500 disabled:hover:opacity-100"
                     onClick={() => Helper.copyToClipboard(link)}
                   >
                     Claim link
                   </button>
+                  <p className="text-[12px] -translate-y-10 transition-all duration-300  group-hover:translate-y-0 group-hover:opacity-100 opacity-0 text-gray-700 mt-2 pb-4">
+                    {link}
+                  </p>
                 </div>
               )}
             </div>
@@ -308,18 +325,18 @@ const ManageNft = ({
       ),
     },
     {
-      id: 'nftDetails',
-      name: "NFT's Details",
+      id: 'keyAccess',
+      name: 'List of access',
       component: (
         <div className="w-full px-4 md:px-0 md:pr-2">
           <Table
             isExpandable={false}
             data={keyAccessData}
             columns={[
-              { title: 'Owner', key: 'owner' },
-              { title: 'Start Time', key: 'startTime' },
-              { title: 'End Time', key: 'endTime' },
-              { title: 'User Id', key: 'userId' },
+              { title: 'test', key: 'test' },
+              { title: 'Status', key: 'active' },
+              { title: 'Active key time ', key: 'time' },
+              { title: 'Owner address', key: 'ownerAddress' },
             ]}
           />
         </div>

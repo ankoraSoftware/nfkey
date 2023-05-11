@@ -46,25 +46,19 @@ export default function Home({
   };
 
   return (
-    <main className={` ${inter.className}`}>
-      {user ? (
-        <p className="text-orange-500 p-2">
-          <span className="text-gray-500">Connected Address:</span>{' '}
-          {Helper.shortenAddress(user?.wallet)}
-        </p>
-      ) : (
-        <button
-          className="bg-orange-500 rounded-lg p-1 min-w-[100px] min-h-[50px] hover:bg-orange-400 text-white"
-          onClick={handleClick}
-        >
-          Connect wallet
-        </button>
-      )}
+    <main className={`px-6 pt-6 ${inter.className}`}>
+      <div className="sm:flex sm:items-start border-b border-gray-100 pb-4">
+        <div className="sm:flex-auto">
+          <h1 className="text-[25px] font-semibold leading-6 text-gray-900">
+            NFT Keys
+          </h1>
+          <p className="mt-2 text-sm text-gray-700">
+            Easily open all doors with nft. List of all keys
+          </p>
+        </div>
+      </div>
       {nfts.length > 0 && (
         <div className="px-2 mt-5">
-          <p className="font-semibold text-xl border-b border-gray-300 pb-2 mb-2 ">
-            Your keys
-          </p>
           <div className="flex flex-wrap justify-center md:justify-start gap-2 md:gap-4">
             {nfts.map((nft) => {
               return (
