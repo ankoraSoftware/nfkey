@@ -50,6 +50,13 @@ export class Helper {
       });
   };
 
+  public static shortenAddress(address: string, length = 4) {
+    if (!address) return null;
+    return `${address?.substring(0, length)}...${address?.substring(
+      address?.length - length
+    )}`;
+  }
+
   public static uploadFileToInfura = async (file: File) => {
     try {
       const formData = new FormData();

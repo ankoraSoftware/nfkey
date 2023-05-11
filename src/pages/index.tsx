@@ -5,6 +5,8 @@ import { UserDocument } from '@/lib/db/user';
 import { getProvider } from '@/components/Web3Modal';
 import Router from 'next/router';
 import { api } from '@/lib/api';
+import Image from 'next/image';
+import { Helper } from '@/helpers/helper';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -22,7 +24,6 @@ export default function Home({
       setAddress(cachedProvider);
     }
   }, []);
-
   const handleClick = async () => {
     const provider = await getProvider();
     const signer = provider.getSigner();
@@ -57,16 +58,46 @@ export default function Home({
         </button>
       )}
       {nfts.length > 0 && (
-        <div>
-          <p>Your keys</p>
-          {nfts.map((nft) => {
-            return (
-              <div key={nft.token_hash}>
-                <p> Name: {nft.contract?.metadata?.name}</p>
-                <button onClick={() => unlock(nft)}>Unlock</button>
-              </div>
-            );
-          })}
+        <div className="px-2 mt-5">
+          <p className="font-semibold text-xl border-b border-gray-300 pb-2 mb-2 ">
+            Your keys
+          </p>
+          <div className="flex flex-wrap justify-center md:justify-start gap-2 md:gap-4">
+            {nfts.map((nft) => {
+              return (
+                <div
+                  key={nft.token_hash}
+                  className="w-[250px] bg-gray-200 rounded-md overflow-hidden"
+                >
+                  <Image
+                    width={500}
+                    height={500}
+                    quality={100}
+                    src={nft.contract.metadata.image.replace(
+                      'ipfs://',
+                      'https://ipfs.io/ipfs/'
+                    )}
+                    alt="Img"
+                    className="w-full h-[250px]"
+                  />
+                  <div className="p-2">
+                    <p className="text-base font-medium">
+                      {nft.contract?.metadata?.name}
+                    </p>
+                    <p className="text-sm font-medium">
+                      Owner of: {Helper.shortenAddress(nft?.owner_of)}
+                    </p>
+                    <button
+                      className="bg-orange-500 rounded-lg p-1 min-w-[150px] min-h-[50px] hover:bg-orange-400 text-white mt-3"
+                      onClick={() => unlock(nft)}
+                    >
+                      Unlock
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
     </main>
