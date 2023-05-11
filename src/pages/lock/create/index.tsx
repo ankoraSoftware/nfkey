@@ -35,11 +35,15 @@ export default function Home({ user }: any) {
   });
 
   const getLocks = async () => {
-    const lockHelper = new LockHelper(formData.type, formData.apiKey);
-    if (lockHelper.lock) {
-      const locks = await lockHelper.lock.getLocks();
-      setLocks([...locks]);
-      console.log(locks, 'locks');
+    try {
+      const lockHelper = new LockHelper(formData.type, formData.apiKey);
+      if (lockHelper.lock) {
+        const locks = await lockHelper.lock.getLocks();
+        setLocks([...locks]);
+        console.log(locks, 'locks');
+      }
+    } catch (error: any) {
+      toast.error(`Error: Lock does't exist`);
     }
   };
 
@@ -64,7 +68,7 @@ export default function Home({ user }: any) {
 
   return (
     <main
-      className={`max-w-[1440px] min-h-screen  m-auto bg-gray-100 flex  justify-center ${inter.className}`}
+      className={`max-w-[1440px] min-h-screen m-auto flex justify-center ${inter.className} px-2 md:px-0`}
     >
       <div className="max-w-[600px] m-auto w-full flex flex-col mt-10 text-orange-500">
         <h1 className=" text-2xl text-orange-500 mb-6">Create Lock</h1>

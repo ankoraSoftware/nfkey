@@ -5,7 +5,7 @@ import type { AppContext, AppProps } from 'next/app';
 import { Toaster } from 'react-hot-toast';
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <div className="flex flex-wrap w-full min-w-full pt-4">
+    <div className="flex flex-wrap w-full min-w-full">
       <Sidebar user={pageProps.user} />
       <div className="w-full flex-1">
         <Component {...pageProps} />

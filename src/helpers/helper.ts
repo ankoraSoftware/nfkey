@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
+import { enc, MD5 } from 'crypto-js';
 
 export class Helper {
   private static endpoint = 'https://ipfs.infura.io:5001/api/v0/add';
@@ -49,6 +50,13 @@ export class Helper {
         toast.error('Something went wrong');
       });
   };
+
+  public static generateGravatar(walletAddress: string) {
+    const email = walletAddress.toLowerCase();
+    const gravatarHash = MD5(email).toString(enc.Hex);
+    const gravatarUrl = `https://www.gravatar.com/avatar/${gravatarHash}`;
+    return gravatarUrl;
+  }
 
   public static shortenAddress(address: string, length = 4) {
     if (!address) return null;

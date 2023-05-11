@@ -91,10 +91,10 @@ export default function CreateNFT({ locks }: { locks: LockDocument[] }) {
   console.log('formData', formData);
   return (
     <main
-      className={`max-w-[1440px] w-full min-h-screen  m-auto bg-gray-100 flex pb-4 justify-center ${inter.className}`}
+      className={`max-w-[1440px] w-full min-h-screen m-auto flex pb-4 justify-center ${inter.className} px-2 md:px-0`}
     >
       <div className="max-w-[600px] m-auto w-full flex flex-col mt-10 text-orange-500 ">
-        <h1 className=" text-2xl mb-2 text-orange-500 mb-6">Create NFT</h1>
+        <h1 className=" text-2xl  text-orange-500 mb-6">Create NFT</h1>
 
         <div className="flex flex-col gap-6">
           <div className="mb-4">

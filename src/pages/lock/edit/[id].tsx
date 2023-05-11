@@ -52,10 +52,10 @@ export default function EditLock({ lock }: any) {
 
   return (
     <main
-      className={`max-w-[1440px] min-h-screen  m-auto bg-gray-100 flex  justify-center ${inter.className}`}
+      className={`max-w-[1440px] min-h-screen  m-auto  flex justify-center ${inter.className} px-2 md:px-0`}
     >
       <div className="max-w-[600px] m-auto w-full flex flex-col mt-10 text-orange-500">
-        <h1 className=" text-2xl mb-2 text-orange-500 mb-6">Edit lock</h1>
+        <h1 className=" text-2xl text-orange-500 mb-6">Edit lock</h1>
 
         <div className="flex flex-col gap-4">
           <Input

@@ -46,28 +46,25 @@ export default function Home({
   };
 
   return (
-    <main className={` ${inter.className}`}>
-      {user ? (
-        <p className="text-gray-600">Connected Address: {user?.wallet}</p>
-      ) : (
-        <button
-          className="bg-orange-500 rounded-lg p-1 min-w-[100px] min-h-[50px] hover:bg-orange-400 text-white"
-          onClick={handleClick}
-        >
-          Connect wallet
-        </button>
-      )}
+    <main className={`px-6 pt-6 ${inter.className}`}>
+      <div className="sm:flex sm:items-start border-b border-gray-100 pb-4">
+        <div className="sm:flex-auto">
+          <h1 className="text-[25px] font-semibold leading-6 text-gray-900">
+            NFT Keys
+          </h1>
+          <p className="mt-2 text-sm text-gray-700">
+            Easily open all doors with nft. List of all keys
+          </p>
+        </div>
+      </div>
       {nfts.length > 0 && (
         <div className="px-2 mt-5">
-          <p className="font-semibold text-xl border-b border-gray-300 pb-2 mb-2 ">
-            Your keys
-          </p>
           <div className="flex flex-wrap justify-center md:justify-start gap-2 md:gap-4">
             {nfts.map((nft) => {
               return (
                 <div
                   key={nft.token_hash}
-                  className="w-[250px] bg-gray-200 rounded-md overflow-hidden"
+                  className="flex flex-col items-center w-[280px] bg-gray-100 rounded-md overflow-hidden"
                 >
                   <Image
                     width={500}
@@ -78,14 +75,14 @@ export default function Home({
                       'https://ipfs.io/ipfs/'
                     )}
                     alt="Img"
-                    className="w-full h-[250px]"
+                    className="w-[90%] h-[250px] mt-3 rounded-md object-cover"
                   />
-                  <div className="p-2">
+                  <div className="w-full lex flex-col justify-start p-4">
                     <p className="text-base font-medium">
                       {nft.contract?.metadata?.name}
                     </p>
-                    <p className="text-sm font-medium">
-                      Lock Name: {nft.contract.metadata.lock.substring(0, 15)}
+                    <p className="text-sm font-medium text-gray-500">
+                      {nft.contract.lock}
                     </p>
                     <button
                       className="bg-orange-500 rounded-lg p-1 min-w-[150px] min-h-[50px] hover:bg-orange-400 text-white mt-2"

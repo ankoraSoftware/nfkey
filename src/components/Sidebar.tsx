@@ -10,6 +10,7 @@ import {
   XMarkIcon,
   UserCircleIcon,
   ArrowLeftOnRectangleIcon,
+  HomeIcon,
 } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Logo from '../assets/nfkey.png';
@@ -20,6 +21,7 @@ import toast from 'react-hot-toast';
 import { Helper } from '@/helpers/helper';
 
 const navigation = [
+  { name: 'Home', href: '/', icon: HomeIcon },
   { name: 'Nfts', href: '/nft', icon: Squares2X2Icon },
   { name: 'Locks', href: '/lock', icon: LockClosedIcon },
 ];
@@ -62,7 +64,7 @@ const Sidebar = ({ user }: any) => {
 
   return (
     <>
-      <div className="w-[300px] relative">
+      <div className="lg:w-[300px] w-full relative">
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog
             as="div"
@@ -284,7 +286,16 @@ const Sidebar = ({ user }: any) => {
             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
           </button>
           <div className="flex-1 text-sm font-semibold leading-6 text-gray-900">
-            Navigation
+            <div className="flex items-center">
+              <Image
+                width={100}
+                height={100}
+                className="h-11 w-auto"
+                src={Logo}
+                alt="Your Company"
+              />
+              <h3 className="text-orange-500 font-bold ml-2">NFKEY</h3>
+            </div>
           </div>
         </div>
       </div>
