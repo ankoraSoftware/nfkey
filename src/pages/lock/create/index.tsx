@@ -67,7 +67,7 @@ export default function Home({ user }: any) {
       className={`max-w-[1440px] min-h-screen  m-auto bg-gray-100 flex  justify-center ${inter.className}`}
     >
       <div className="max-w-[600px] m-auto w-full flex flex-col mt-10 text-orange-500">
-        <h1 className=" text-2xl mb-2 text-orange-500 mb-6">Create Lock</h1>
+        <h1 className=" text-2xl text-orange-500 mb-6">Create Lock</h1>
 
         <div className="flex flex-col gap-4">
           <Input
@@ -108,16 +108,25 @@ export default function Home({ user }: any) {
           >
             Get Locks
           </button>
-          {locks.map((l) => {
-            return (
-              <div
-                key={l.id}
-                onClick={() => setFormData({ ...formData, metadata: l })}
-              >
-                {l.name}
-              </div>
-            );
-          })}
+          <div className="flex flex-wrap">
+            {locks.map((l) => {
+              return (
+                <div
+                  className={`w-[200px] rounded-md border border-orange-500 px-3 py-2 text-center text-sm font-semibold text-black hover:text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500 cursor-pointer
+                  ${formData.metadata && 'border-green-700'}
+                  `}
+                  key={l.id}
+                  onClick={() => {
+                    setFormData({ ...formData, metadata: l });
+                    toast.success('Successfully set metadata');
+                  }}
+                >
+                  {l.name}
+                </div>
+              );
+            })}
+          </div>
+
           <button
             onClick={onSubmit}
             className="text-white bg-orange-500 hover:opacity-75 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
