@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 
 type TableRowProps<T> = {
-  item: T;
+  item: any;
   columns: {
     title: string;
     key: keyof T;
