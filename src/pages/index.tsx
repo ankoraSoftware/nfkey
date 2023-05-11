@@ -1,9 +1,9 @@
-import Image from 'next/image';
 import { Inter } from 'next/font/google';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { UserDocument } from '@/lib/db/user';
 import { getProvider } from '@/components/Web3Modal';
+import Router from 'next/router';
 import { api } from '@/lib/api';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -32,6 +32,7 @@ export default function Home({
     const { data } = await axios.get('/api/auth/nonce');
     const signature = await signer.signMessage(data.message);
     await axios.post('/api/auth/signin', { signature, message: data.message });
+    Router.reload();
   };
 
   const unlock = async (nft: any) => {
@@ -43,6 +44,7 @@ export default function Home({
     const signature = await signer.signMessage(message);
     await api.unlock({ signature, message });
   };
+
   return (
     <main className={` ${inter.className}`}>
       {user ? (
