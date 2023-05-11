@@ -35,11 +35,15 @@ export default function Home({ user }: any) {
   });
 
   const getLocks = async () => {
-    const lockHelper = new LockHelper(formData.type, formData.apiKey);
-    if (lockHelper.lock) {
-      const locks = await lockHelper.lock.getLocks();
-      setLocks([...locks]);
-      console.log(locks, 'locks');
+    try {
+      const lockHelper = new LockHelper(formData.type, formData.apiKey);
+      if (lockHelper.lock) {
+        const locks = await lockHelper.lock.getLocks();
+        setLocks([...locks]);
+        console.log(locks, 'locks');
+      }
+    } catch (error: any) {
+      toast.error(`Error: Lock does't exist`);
     }
   };
 
