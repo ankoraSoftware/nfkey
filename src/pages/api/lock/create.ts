@@ -12,7 +12,7 @@ async function handler(req: AuthenticatedRequest, res: NextApiResponse) {
   }
   await db();
 
-  const secretKey = 'SecretKey245';
+  const secretKey = process.env.HASH_SECRET_KEY as string;
   const encryptMessage = (text: string) => {
     return CryptoJS.AES.encrypt(text, secretKey).toString();
   };

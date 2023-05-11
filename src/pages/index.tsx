@@ -1,5 +1,5 @@
 import { Inter } from 'next/font/google';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 import { UserDocument } from '@/lib/db/user';
 import { getProvider } from '@/components/Web3Modal';

@@ -98,9 +98,10 @@ async function handler(req: AuthenticatedRequest, res: NextApiResponse) {
 
   const lock = await Lock.findById(lockId);
   if (!lock) throw new Error('');
-  const apiKey = CryptoJS.AES.decrypt(lock?.apiKey, 'SecretKey245').toString(
-    CryptoJS.enc.Utf8
-  );
+  const apiKey = CryptoJS.AES.decrypt(
+    lock?.apiKey,
+    process.env.HASH_SECRET_KEY as string
+  ).toString(CryptoJS.enc.Utf8);
 
   const lockHelper = new LockHelper(lock.type as ELock, apiKey);
   //@ts-ignore
