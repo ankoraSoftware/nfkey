@@ -1,11 +1,11 @@
 import { Inter } from 'next/font/google';
 import { useState } from 'react';
 import Input from '@/components/Input';
-import router from 'next/router';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import Select from '@/components/Select';
 import { api } from '@/lib/api';
 import toast from 'react-hot-toast';
+import CryptoJS from 'crypto-js';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -19,11 +19,16 @@ export enum ELock {
   random = 'RandomLock',
 }
 
+const secretKey = 'SecretKey245';
+const decryptMessage = (text: string) => {
+  return CryptoJS.AES.decrypt(text, secretKey).toString(CryptoJS.enc.Utf8);
+};
+
 export default function EditLock({ lock }: any) {
   const [formData, setFormData] = useState<LockFormData>({
-    name: lock.name,
-    type: lock.type,
-    apiKey: lock.apiKey,
+    name: lock?.name,
+    type: lock?.type,
+    apiKey: decryptMessage(lock?.apiKey),
   });
 
   const onSubmit = async () => {

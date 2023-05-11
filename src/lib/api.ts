@@ -65,11 +65,6 @@ export class Api {
     return res.data;
   }
 
-  async deleteNft(id: string) {
-    const res = await this.api.delete(`/api/nft/delete/${id}`);
-    return res.data;
-  }
-
   async createContract(data: any) {
     return this.api.post('/api/contract', data);
   }

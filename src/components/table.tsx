@@ -3,12 +3,13 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 
 type TableRowProps<T> = {
-  item: T;
+  item: any;
   columns: {
     title: string;
     key: keyof T;
   }[];
   expanded: boolean;
+  isExpandable: boolean;
   onRowClick: () => void;
 };
 
@@ -16,6 +17,7 @@ function TableRow<T>({
   item,
   columns,
   expanded,
+  isExpandable,
   onRowClick,
 }: TableRowProps<T>) {
   return (
@@ -29,7 +31,7 @@ function TableRow<T>({
             {item[column.key] as string}
           </td>
         ))}
-        {expanded !== undefined && (
+        {isExpandable && expanded !== undefined && (
           <td className="text-end w-10 pr-2 cursor-pointer">
             {expanded ? (
               <MinusIcon className="w-5 h-5" onClick={onRowClick} />
@@ -80,13 +82,18 @@ function TableRow<T>({
 
 type TableProps<T> = {
   data: T[];
+  isExpandable?: boolean;
   columns: {
     title: string;
     key: keyof T;
   }[];
 };
 
-export default function Table<T>({ data, columns }: TableProps<T>) {
+export default function Table<T>({
+  data,
+  columns,
+  isExpandable = true,
+}: TableProps<T>) {
   const [expandedRows, setExpandedRows] = useState<number[]>([]);
 
   const handleRowClick = (index: number) => {
@@ -107,7 +114,7 @@ export default function Table<T>({ data, columns }: TableProps<T>) {
 
   return (
     <div>
-      <div className="mt-8 flow-root border border-gray-100 rounded-xl overflow-hidden">
+      <div className="mt-8 flow-root border border-gray-200 rounded-xl overflow-hidden">
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
             <table className="min-w-full divide-y divide-gray-300">
@@ -130,6 +137,7 @@ export default function Table<T>({ data, columns }: TableProps<T>) {
                     key={index}
                     item={item}
                     columns={columns}
+                    isExpandable={isExpandable}
                     expanded={expandedRows.includes(index)}
                     onRowClick={() => handleRowClick(index)}
                   />
