@@ -161,10 +161,10 @@ const ManageNft = ({
       id: 'sendNft',
       name: 'Send NFT',
       component: (
-        <div className="px-4 md:px-0 mt-5">
-          <div className="flex gap-4">
+        <div className="px-4 md:px-0 md:pr-2 pb-10 mt-5">
+          <div className="flex flex-col lg:flex-row gap-4">
             <Image
-              className="rounded-md w-[256px] h-[256px] object-cover"
+              className="rounded-md w-[256px] h-[256px] object-cover self-center md:self-start"
               width={256}
               height={256}
               src={contract.metadata.image.replace(
@@ -177,10 +177,10 @@ const ManageNft = ({
               <h1 className="text-orange-500 text-xl  mb-1">
                 {contract.metadata.name}
               </h1>
-              <div className="flex items-center gap-4 mb-2">
+              <div className="flex  items-center gap-4 mb-2">
                 <h2 className=" text-gray-600 hover:text-orange-500 cursor-pointer">
                   <a target="_blank" href={contract.metadata.external_link}>
-                    {contract.metadata.external_link}
+                    {`${contract.metadata.external_link.substring(0, 8)}...`}
                   </a>
                 </h2>{' '}
                 | <h2 className=" text-orange-500">{contract.metadata.lock}</h2>{' '}
@@ -199,10 +199,10 @@ const ManageNft = ({
             </div>
           </div>
 
-          <div className=" w-full mt-4 ">
+          <div className="w-full mt-4 ">
             <h2 className="text-orange-500 font-bold text-[22px]">Drop NFT</h2>
             <div className="flex flex-col gap-4">
-              <div className="flex items-center gap-4 mt-5">
+              <div className="flex flex-col md:flex-row items-center gap-4 mt-5">
                 <div className="w-full">
                   <label className="block text-sm font-medium text-orange-500">
                     Date from
@@ -210,13 +210,15 @@ const ManageNft = ({
                   <DatePicker
                     disabled={unlimitedAccess}
                     placeholderText={unlimitedAccess ? 'Today' : '05/26/2024'}
-                    className="bg-white border border-gray-300 text-gray-900 hover:border-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 disabled:pointer-events-none"
+                    className="min-w-[100px] bg-white border border-gray-300 text-gray-900 hover:border-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 disabled:pointer-events-none"
                     selected={nft.from}
                     onChange={(date) => setNft({ ...nft, from: date })}
                   />
                 </div>
 
-                <p className="text-orange-500 mt-3 font-xxl">-</p>
+                <p className="hidden md:flex text-orange-500 md:mt-3 font-xxl">
+                  -
+                </p>
 
                 <div className="w-full">
                   <label className="block text-sm font-medium text-orange-500">
@@ -227,15 +229,17 @@ const ManageNft = ({
                     placeholderText={
                       unlimitedAccess ? 'Unlimited' : '06/17/2024'
                     }
-                    className="bg-white border border-gray-300 text-gray-900 hover:border-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 disabled:pointer-events-none"
+                    className="min-w-[100px] bg-white border border-gray-300 text-gray-900 hover:border-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 disabled:pointer-events-none"
                     selected={nft.to}
                     onChange={(date) => setNft({ ...nft, to: date })}
                   />
                 </div>
 
-                <p className="text-orange-500 mt-3 font-xxl">or</p>
+                <p className="text-orange-500 md:mt-3 font-xxl leading-none self-start md:self-center">
+                  or
+                </p>
 
-                <div className="flex items-center pl-2 h-full min-h-[40px] mt-4 flex-1 w-full min-w-[300px]">
+                <div className="flex items-center md:pl-2 h-full min-h-[40px] md:mt-4 w-full min-w-[300px]">
                   <div
                     onClick={() => {
                       setUnlimitedAccess(!unlimitedAccess);
@@ -252,7 +256,7 @@ const ManageNft = ({
                       <CheckIcon className="w-4 h-4 text-orange-500" />
                     )}
                   </div>
-                  <p className="text-sm">Check for unlimited access</p>
+                  <p className="text-sm"> or Check for unlimited access</p>
                 </div>
               </div>
               <Input
@@ -307,7 +311,7 @@ const ManageNft = ({
       id: 'nftDetails',
       name: "NFT's Details",
       component: (
-        <div className="w-full px-4 md:px-0">
+        <div className="w-full px-4 md:px-0 md:pr-2">
           <Table
             isExpandable={false}
             data={keyAccessData}
