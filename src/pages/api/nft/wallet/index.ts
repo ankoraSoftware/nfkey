@@ -16,7 +16,7 @@ async function handler(req: AuthenticatedRequest, res: NextApiResponse) {
   query.append('chain', '0x13881');
   query.append('media_items', 'false');
   query.append('format', 'decimal');
-  const contracts = await Contract.find({});
+  const contracts = await Contract.find({}).populate(['lock']);
   contracts.forEach((c) => {
     query.append('token_addresses', c.address);
   });

@@ -13,7 +13,7 @@ import {
 } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Logo from '../assets/nfkey.png';
-import { getProvider } from '@/components/Web3modal';
+import { getProvider } from '@/components/ConnectModal';
 import axios from 'axios';
 import Router from 'next/router';
 import toast from 'react-hot-toast';

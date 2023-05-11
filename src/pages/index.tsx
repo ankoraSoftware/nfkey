@@ -2,7 +2,7 @@ import { Inter } from 'next/font/google';
 import { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 import { UserDocument } from '@/lib/db/user';
-import { getProvider } from '@/components/Web3Modal';
+import { getProvider } from '@/components/ConnectModal';
 import Router from 'next/router';
 import { api } from '@/lib/api';
 import Image from 'next/image';
@@ -45,6 +45,13 @@ export default function Home({
     await api.unlock({ signature, message });
   };
 
+  const lockAction = async (contract: any) => {
+    const { data } = await api.lockAction(contract);
+    console.log(data, 'actionn');
+
+    return data.lockAction;
+  };
+
   return (
     <main className={` ${inter.className}`}>
       {user ? (
@@ -85,13 +92,13 @@ export default function Home({
                       {nft.contract?.metadata?.name}
                     </p>
                     <p className="text-sm font-medium">
-                      Lock Name: {nft.contract.metadata.lock.substring(0, 15)}
+                      Lock Name: {nft.contract.lock?.name}
                     </p>
                     <button
                       className="bg-orange-500 rounded-lg p-1 min-w-[150px] min-h-[50px] hover:bg-orange-400 text-white mt-2"
                       onClick={() => unlock(nft)}
                     >
-                      Unlock
+                      {nft.lockAction?.lockAction}
                     </button>
                   </div>
                 </div>
@@ -109,6 +116,13 @@ export async function getServerSideProps({ req }: any) {
   try {
     const nftsRes = await api.getWalletNfts();
     nfts = nftsRes.nfts;
+    for (const nft of nfts) {
+      const lockAction = await api.lockAction(nft.contract);
+      console.log(lockAction, 'actionn');
+      Object.assign(nft, { ...nft, lockAction });
+      // return data.lockAction;
+    }
+    console.log(nfts, 'nftssss');
   } catch (e) {}
 
   return {

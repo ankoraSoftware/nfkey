@@ -1,5 +1,5 @@
 import Input from '@/components/Input';
-import { getProvider } from '@/components/Web3Modal';
+import { getProvider } from '@/components/ConnectModal';
 import { ContractHelper } from '@/helpers/contract';
 import { Helper } from '@/helpers/helper';
 import { api } from '@/lib/api';
@@ -182,7 +182,8 @@ const ManageNft = ({
                     {contract.metadata.external_link}
                   </a>
                 </h2>{' '}
-                | <h2 className=" text-orange-500">{contract.lock.toString()}</h2>{' '}
+                |{' '}
+                <h2 className=" text-orange-500">{contract.lock.toString()}</h2>{' '}
                 |{' '}
                 <h2
                   className="text-gray-600 hover:text-orange-500 cursor-pointer"
@@ -325,7 +326,6 @@ const ManageNft = ({
 
   return (
     <div className="flex items-start flex-col justify-center gap-2 w-full max-w-[900px] ml-14">
-<<<<<<< HEAD
       <div className="flex gap-4 mt-10 ">
         <Image
           className="rounded-[8px] w-[256px] h-[256px] object-cover"
@@ -467,13 +467,6 @@ const ManageNft = ({
             </div>
           )}
         </div>
-=======
-      <Tabs tabs={TABS} activeTab={activeTab} setActiveTab={setActiveTab} />
-      <div className="w-full">
-        {TABS.map((tab, i) => {
-          if (tab.name === activeTab) return <div key={i}>{tab.component}</div>;
-        })}
->>>>>>> 8ca5cda8e21c40a50a4345c66d2379c369abe335
       </div>
     </div>
   );

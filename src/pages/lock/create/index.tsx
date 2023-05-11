@@ -85,6 +85,7 @@ export default function Home({ user }: any) {
               options={Object.values(ELock).map((type) => ({
                 id: type,
                 value: type,
+                label: type,
               }))}
               value={formData.type}
               containerStyle="bg-white border rounded-md border-gray-300 hover:border-gray-500 w-full]"
