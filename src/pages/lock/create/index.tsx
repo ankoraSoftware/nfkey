@@ -15,7 +15,7 @@ interface LockFormData {
   name: string;
   type: ELock;
   apiKey: string;
-  userId: string;
+  user: string;
   metadata: any;
 }
 export enum ELock {
@@ -30,7 +30,7 @@ export default function Home({ user }: any) {
     name: '',
     type: ELock.nuki,
     apiKey: '',
-    userId: user?._id,
+    user: user?._id,
     metadata: null,
   });
 

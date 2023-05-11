@@ -53,7 +53,6 @@ export default function CreateNFT({ locks }: { locks: LockDocument[] }) {
         name: formData.name,
         description: formData.description,
         external_link: formData.externalLink,
-        lock: formData.lockId,
       };
       const hash = await Helper.uploadJsonToIpfs(metadata);
       const { data: artifact } = await axios.get(
@@ -70,6 +69,7 @@ export default function CreateNFT({ locks }: { locks: LockDocument[] }) {
         metadata,
         address: ethers.utils.getAddress(contract.address),
         chainId: provider.network.chainId,
+        lock: formData.lockId,
       });
       toast.success('Successfully created nft!');
       router.push('/nft');
@@ -116,7 +116,7 @@ export default function CreateNFT({ locks }: { locks: LockDocument[] }) {
             <Select
               options={locks.map((lock) => ({
                 id: lock._id,
-                value: lock._id,
+                value: lock.name,
               }))}
               value={formData.lockId}
               containerStyle="bg-white border rounded-md border-gray-300 hover:border-gray-500 w-full]"

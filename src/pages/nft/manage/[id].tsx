@@ -26,7 +26,6 @@ interface IContract extends ContractDocument {
     image: string;
     name: string;
     external_link: string;
-    lock: string;
     description: string;
   };
 }
@@ -162,7 +161,10 @@ const ManageNft = ({
             </h2>{' '}
             |{' '}
             <h2 className=" text-orange-500 text-gray-600">
-              {contract.metadata.lock}
+              {
+                //@ts-ignore
+                contract.lock?.toString()
+              }
             </h2>{' '}
             |{' '}
             <h2
