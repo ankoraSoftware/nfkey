@@ -41,7 +41,7 @@ async function handler(req: AuthenticatedRequest, res: NextApiResponse) {
     await ethSigUtil.recoverPersonalSignature(msgParams)
   );
 
-  const nftOwner = await web3Contract.ownerOf(1);
+  const nftOwner = await web3Contract.ownerOf(Number(tokenId));
   if (ethers.utils.getAddress(nftOwner) !== wallet) throw new Error('BadOwner');
   const ownerSignature = await web3Contract.tokenSignatures(Number(tokenId));
   const isBlacklisted = await web3Contract.blacklistedSignatures(
@@ -74,6 +74,7 @@ async function handler(req: AuthenticatedRequest, res: NextApiResponse) {
     ownerSignature
   );
 
+  console.log(signer, 'SIGNER');
   if (
     ethers.utils.getAddress(signer) !== ethers.utils.getAddress(contractOwner)
   )

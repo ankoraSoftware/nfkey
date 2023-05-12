@@ -7,7 +7,7 @@ export class Api {
   constructor() {
     this.api = axios.create({
       withCredentials: true,
-      baseURL: 'http://localhost:3000',
+      baseURL: 'https://850d-195-222-40-114.ngrok-free.app',
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',

@@ -31,6 +31,7 @@ export default function Home({
   nfts: any[];
 }) {
   const [address, setAddress] = useState<string>('');
+  const [error, setError] = useState('');
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const cachedProvider = localStorage.getItem('account') ?? '';
@@ -67,6 +68,7 @@ export default function Home({
       }, 5000);
     } catch (e) {
       console.log('ovaj', e);
+      setError(JSON.stringify(e));
       toast.error('Someting went wrong!');
       //
     }
