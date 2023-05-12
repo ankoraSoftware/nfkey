@@ -2,13 +2,26 @@ import { Inter } from 'next/font/google';
 import { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 import { UserDocument } from '@/lib/db/user';
-import { getProvider } from '@/components/Web3Modal';
+import { getProvider } from '@/components/ConnectModal';
 import Router from 'next/router';
 import { api } from '@/lib/api';
 import Image from 'next/image';
 import { Helper } from '@/helpers/helper';
+import { toast } from 'react-hot-toast';
 
 const inter = Inter({ subsets: ['latin'] });
+
+const fetchLockAction = async (nfts: any) => {
+  // const { data } = await api.lockAction(contract);
+  // console.log(data, 'actionn');
+
+  // return data.lockAction;
+  for (const nft of nfts) {
+    const lockAction = await api.lockAction(nft.contract);
+    Object.assign(nft, { ...nft, lockAction });
+    // return data.lockAction;
+  }
+};
 
 export default function Home({
   user,
@@ -34,16 +47,32 @@ export default function Home({
     await axios.post('/api/auth/signin', { signature, message: data.message });
     Router.reload();
   };
+  const [unlockDisable, setUnlockDisable] = useState(false);
 
   const unlock = async (nft: any) => {
+    setUnlockDisable(true);
     const message = `I want to unlock ${nft.contract.metadata.name}\nCollection:\n${nft.token_address}\n\nToken:\n${nft.token_id}
     `;
+    try {
+      const provider = await getProvider();
+      const signer = provider.getSigner();
+      const signature = await signer.signMessage(message);
+      await api.unlock({ signature, message });
 
-    const provider = await getProvider();
-    const signer = await provider.getSigner();
-    const signature = await signer.signMessage(message);
-    await api.unlock({ signature, message });
+      toast.success(nft.lockAction?.lockAction);
+      await fetchLockAction(nfts);
+
+      setTimeout(() => {
+        Router.reload();
+      }, 5000);
+    } catch (e) {
+      console.log('ovaj', e);
+      toast.error('Someting went wrong!');
+      //
+    }
   };
+
+  useEffect(() => {}, []);
 
   return (
     <main className={`px-6 pt-6 ${inter.className}`}>
@@ -81,14 +110,17 @@ export default function Home({
                     <p className="text-base font-medium">
                       {nft.contract?.metadata?.name}
                     </p>
-                    <p className="text-sm font-medium text-gray-500">
-                      {nft.contract.metadata.lock.substring(0, 15)}
+                    <p className="text-sm font-medium">
+                      {nft.contract.lock?.name}
                     </p>
                     <button
+                      disabled={unlockDisable}
                       className="bg-orange-500 rounded-lg p-1 min-w-[150px] min-h-[50px] hover:bg-orange-400 text-white mt-2"
                       onClick={() => unlock(nft)}
                     >
-                      Unlock
+                      {unlockDisable
+                        ? 'Loading...'
+                        : nft.lockAction?.lockAction}
                     </button>
                   </div>
                 </div>
@@ -105,8 +137,13 @@ export async function getServerSideProps({ req }: any) {
   let nfts = [];
   try {
     const nftsRes = await api.getWalletNfts();
+    console.log(nftsRes.nfts, 'nftsss');
+
     nfts = nftsRes.nfts;
-  } catch (e) {}
+    await fetchLockAction(nfts);
+  } catch (e) {
+    //
+  }
 
   return {
     props: { nfts },

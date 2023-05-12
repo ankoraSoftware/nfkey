@@ -71,7 +71,6 @@ export async function getServerSideProps({ req }: any) {
     const contractsRes = await api.getContracts();
     contracts = contractsRes.contracts;
   }
-  console.log(contracts, 'contracts');
   return {
     props: { contracts: contracts },
   };

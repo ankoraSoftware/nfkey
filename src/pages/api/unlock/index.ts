@@ -94,20 +94,19 @@ async function handler(req: AuthenticatedRequest, res: NextApiResponse) {
   if (!canUnlock) throw new Error('Unable to unlock');
 
   //@ts-ignore
-  const lockId = contract.metadata.lock;
+  const lockId = contract.lock._id.toString();
 
   const lock = await Lock.findById(lockId);
-  if (!lock) throw new Error('');
+  // if (!lock) throw new Error('');
   const apiKey = CryptoJS.AES.decrypt(
-    lock?.apiKey,
+    lock?.apiKey as string,
     process.env.HASH_SECRET_KEY as string
   ).toString(CryptoJS.enc.Utf8);
 
-  const lockHelper = new LockHelper(lock.type as ELock, apiKey);
+  const lockHelper = new LockHelper(lock?.type as ELock, apiKey);
   //@ts-ignore
   const lockData = await lockHelper.lock?.getLock(lock.metadata.id);
   const lockStatus = lockData?.data.state.state;
-  console.log(lockData?.data.state);
 
   if (lockStatus === 3 || lockStatus === 5)
     //@ts-ignore

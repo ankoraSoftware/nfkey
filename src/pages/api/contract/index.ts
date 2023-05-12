@@ -10,7 +10,9 @@ async function handler(req: AuthenticatedRequest, res: NextApiResponse) {
     res.status(200).json({ contract });
     return;
   } else if (req.method === 'GET') {
-    const contracts = await Contract.find({ user: req.user._id });
+    const contracts = await Contract.find({ user: req.user._id }).populate([
+      'lock',
+    ]);
     res.status(200).json({ contracts });
     return;
   }

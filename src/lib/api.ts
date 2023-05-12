@@ -120,6 +120,11 @@ export class Api {
     const res = await this.api.post(`/api/unlock`, data);
     return res.data;
   }
+
+  async lockAction(contract: any) {
+    const res = await this.api.post('/api/unlock/status', contract);
+    return res.data;
+  }
 }
 
 export const api = new Api();

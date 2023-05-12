@@ -1,5 +1,5 @@
 import Input from '@/components/Input';
-import { getProvider } from '@/components/Web3Modal';
+import { getProvider } from '@/components/ConnectModal';
 import { ContractHelper } from '@/helpers/contract';
 import { Helper } from '@/helpers/helper';
 import { api } from '@/lib/api';
