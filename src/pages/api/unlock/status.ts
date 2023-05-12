@@ -14,13 +14,15 @@ async function handler(req: AuthenticatedRequest, res: NextApiResponse) {
     return;
   }
   await db();
-  console.log(req.body, 'bodyyy');
 
   // Handle the POST request here
   const lock = await Lock.findById(req.body.lock?._id.toString());
-  if (!lock) throw new Error('');
+  if (!lock) {
+    res.status(200).json({ status: 'NOT OK' });
+    return;
+  }
   const apiKey = CryptoJS.AES.decrypt(
-    lock?.apiKey,
+    lock?.apiKey as string,
     process.env.HASH_SECRET_KEY as string
   ).toString(CryptoJS.enc.Utf8);
   const lockHelper = new LockHelper(req.body.lock?.type as ELock, apiKey);
@@ -39,6 +41,9 @@ async function handler(req: AuthenticatedRequest, res: NextApiResponse) {
     res.status(200).json({
       lockAction: 'Unlock',
     });
+  res.status(200).json({
+    lockAction: 'Loading...',
+  });
 }
 
 export default withAuth(handler);

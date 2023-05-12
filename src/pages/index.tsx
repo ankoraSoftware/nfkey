@@ -7,8 +7,21 @@ import Router from 'next/router';
 import { api } from '@/lib/api';
 import Image from 'next/image';
 import { Helper } from '@/helpers/helper';
+import { toast } from 'react-hot-toast';
 
 const inter = Inter({ subsets: ['latin'] });
+
+const fetchLockAction = async (nfts: any) => {
+  // const { data } = await api.lockAction(contract);
+  // console.log(data, 'actionn');
+
+  // return data.lockAction;
+  for (const nft of nfts) {
+    const lockAction = await api.lockAction(nft.contract);
+    Object.assign(nft, { ...nft, lockAction });
+    // return data.lockAction;
+  }
+};
 
 export default function Home({
   user,
@@ -34,47 +47,53 @@ export default function Home({
     await axios.post('/api/auth/signin', { signature, message: data.message });
     Router.reload();
   };
+  const [unlockDisable, setUnlockDisable] = useState(false);
 
   const unlock = async (nft: any) => {
+    setUnlockDisable(true);
     const message = `I want to unlock ${nft.contract.metadata.name}\nCollection:\n${nft.token_address}\n\nToken:\n${nft.token_id}
     `;
+    try {
+      const provider = await getProvider();
+      const signer = provider.getSigner();
+      const signature = await signer.signMessage(message);
+      await api.unlock({ signature, message });
 
-    const provider = await getProvider();
-    const signer = await provider.getSigner();
-    const signature = await signer.signMessage(message);
-    await api.unlock({ signature, message });
+      toast.success(nft.lockAction?.lockAction);
+      await fetchLockAction(nfts);
+
+      setTimeout(() => {
+        Router.reload();
+      }, 5000);
+    } catch (e) {
+      console.log('ovaj', e);
+      toast.error('Someting went wrong!');
+      //
+    }
   };
 
-  const lockAction = async (contract: any) => {
-    const { data } = await api.lockAction(contract);
-    console.log(data, 'actionn');
-
-    return data.lockAction;
-  };
+  useEffect(() => {}, []);
 
   return (
-    <main className={` ${inter.className}`}>
-      {user ? (
-        <p className="text-gray-600">Connected Address: {user?.wallet}</p>
-      ) : (
-        <button
-          className="bg-orange-500 rounded-lg p-1 min-w-[100px] min-h-[50px] hover:bg-orange-400 text-white"
-          onClick={handleClick}
-        >
-          Connect wallet
-        </button>
-      )}
+    <main className={`px-6 pt-6 ${inter.className}`}>
+      <div className="sm:flex sm:items-start border-b border-gray-100 pb-4">
+        <div className="sm:flex-auto">
+          <h1 className="text-[25px] font-semibold leading-6 text-gray-900">
+            NFT Keys
+          </h1>
+          <p className="mt-2 text-sm text-gray-700">
+            Easily open all doors with nft. List of all keys
+          </p>
+        </div>
+      </div>
       {nfts.length > 0 && (
         <div className="px-2 mt-5">
-          <p className="font-semibold text-xl border-b border-gray-300 pb-2 mb-2 ">
-            Your keys
-          </p>
           <div className="flex flex-wrap justify-center md:justify-start gap-2 md:gap-4">
             {nfts.map((nft) => {
               return (
                 <div
                   key={nft.token_hash}
-                  className="w-[250px] bg-gray-200 rounded-md overflow-hidden"
+                  className="flex flex-col items-center w-[280px] bg-gray-100 rounded-md overflow-hidden"
                 >
                   <Image
                     width={500}
@@ -85,20 +104,23 @@ export default function Home({
                       'https://ipfs.io/ipfs/'
                     )}
                     alt="Img"
-                    className="w-full h-[250px]"
+                    className="w-[90%] h-[250px] mt-3 rounded-md object-cover"
                   />
-                  <div className="p-2">
+                  <div className="w-full lex flex-col justify-start p-4">
                     <p className="text-base font-medium">
                       {nft.contract?.metadata?.name}
                     </p>
                     <p className="text-sm font-medium">
-                      Lock Name: {nft.contract.lock?.name}
+                      {nft.contract.lock?.name}
                     </p>
                     <button
+                      disabled={unlockDisable}
                       className="bg-orange-500 rounded-lg p-1 min-w-[150px] min-h-[50px] hover:bg-orange-400 text-white mt-2"
                       onClick={() => unlock(nft)}
                     >
-                      {nft.lockAction?.lockAction}
+                      {unlockDisable
+                        ? 'Loading...'
+                        : nft.lockAction?.lockAction}
                     </button>
                   </div>
                 </div>
@@ -115,15 +137,13 @@ export async function getServerSideProps({ req }: any) {
   let nfts = [];
   try {
     const nftsRes = await api.getWalletNfts();
+    console.log(nftsRes.nfts, 'nftsss');
+
     nfts = nftsRes.nfts;
-    for (const nft of nfts) {
-      const lockAction = await api.lockAction(nft.contract);
-      console.log(lockAction, 'actionn');
-      Object.assign(nft, { ...nft, lockAction });
-      // return data.lockAction;
-    }
-    console.log(nfts, 'nftssss');
-  } catch (e) {}
+    await fetchLockAction(nfts);
+  } catch (e) {
+    //
+  }
 
   return {
     props: { nfts },
