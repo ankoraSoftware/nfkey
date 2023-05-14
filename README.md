@@ -1,6 +1,6 @@
 # NFKey
 
-[![N|Solid](https://cldup.com/dTxpPi9lDf.thumb.png)](https://nodesource.com/products/nsolid)
+[![N|Solid](https://i.ibb.co/Ky36Wtt/logo.png)](https://www.bnbchain.org/en/zero2hero-builder-series#none)
 
 NFKey integrating Smart Locks, Web 3, and NFTs for better user experience with digital keys.
 
