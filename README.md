@@ -1,38 +1,73 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# NFKey
 
-## Getting Started
+[![N|Solid](https://cldup.com/dTxpPi9lDf.thumb.png)](https://nodesource.com/products/nsolid)
 
-First, run the development server:
+NFKey integrating Smart Locks, Web 3, and NFTs for better user experience with digital keys.
 
-```bash
+## Features
+
+- Link your smart locks
+- Release your NFT collection
+- Drop NFT
+- Generate link to claim NFT
+- User interface to unlock locks
+
+NFKey is a cutting-edge security lock system by integrating smart locks and web 3 technologies. Our initial implementation involves integrating the Nuki smart lock, allowing users to experience enhanced security and convenience. Our future plan is to expand our integration to support a wider range of smart locks, providing users with even more options. To simplify user access and enhance security, we have integrated NFTs, which can be easily managed through a secure wallet. With our project, we aim to revolutionize traditional lock systems, delivering advanced security features and seamless user experiences.
+
+## Tech
+
+NFKeys uses
+
+- [NextJS] - HNext.js is an advanced framework for building web applications based on React!
+- [Solidity] - Solidity is a high-level programming language designed for writing smart contracts on blockchain platforms
+- [MongoDB] - MongoDB is a scalable and flexible NoSQL database system designed for storing and retrieving large volumes of structured and unstructured data
+
+## Installation
+
+NFKey requires [Node.js](https://nodejs.org/) v18+ to run.
+
+Install the dependencies and devDependencies and start the app.
+
+```sh
+cd nfkey
+npm i
+docker compose up -d
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+For production environments...
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+```sh
+npm install --production
+npm run buildth
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## Screenshots
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Link lock
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+![Link lock](https://i.ibb.co/p3hJm7H/Screenshot-2023-05-14-at-16-17-34.png)
 
-## Learn More
+## Create NFT collection
 
-To learn more about Next.js, take a look at the following resources:
+![Link lock](https://i.ibb.co/vkt9qZp/Screenshot-2023-05-14-at-16-18-07.png)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Drop NFT or generate link
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+![Link lock](https://i.ibb.co/6r553C0/Screenshot-2023-05-14-at-16-19-00.png)
 
-## Deploy on Vercel
+## Connect wallet (User interface)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+![Link lock](https://i.ibb.co/59LsN3t/IMG-1772.png)
+![Link lock](https://i.ibb.co/vZrQgdj/IMG-1773.png)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Unlock lock (User interface)
+
+![Link lock](https://i.ibb.co/2ZNXfPX/IMG-1774.png)
+![Link lock](https://i.ibb.co/7Qwdw14/IMG-1776.png)
+
+## Video demonstration
+
+https://www.canva.com/design/DAFi1TFQ4go/ZqbCFC74s04Nr8S11cmdPA/watch?utm_content=DAFi1TFQ4go&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink
+
+Press play to play video demonstration
