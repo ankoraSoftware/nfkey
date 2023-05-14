@@ -56,6 +56,10 @@ npm run buildth
 
 ![Link lock](https://i.ibb.co/6r553C0/Screenshot-2023-05-14-at-16-19-00.png)
 
+## List of NFT accesses
+
+![Link lock](https://i.ibb.co/KG3LwBf/Screenshot-2023-05-14-at-16-20-23.png)
+
 ## Connect wallet (User interface)
 
 ![Link lock](https://i.ibb.co/59LsN3t/IMG-1772.png)
