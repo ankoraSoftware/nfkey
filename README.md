@@ -68,6 +68,4 @@ npm run buildth
 
 ## Video demonstration
 
-https://www.canva.com/design/DAFi1TFQ4go/ZqbCFC74s04Nr8S11cmdPA/watch?utm_content=DAFi1TFQ4go&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink
-
-Press play to play video demonstration
+[![Watch the video](https://i.ibb.co/p3hJm7H/Screenshot-2023-05-14-at-16-17-34.png)](https://www.canva.com/design/DAFi1TFQ4go/ZqbCFC74s04Nr8S11cmdPA/watch?utm_content=DAFi1TFQ4go&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink)
