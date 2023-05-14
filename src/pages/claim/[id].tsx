@@ -4,6 +4,8 @@ import { KeyAccessDocument } from '@/lib/db/key-access';
 import { UserDocument } from '@/lib/db/user';
 import React from 'react';
 import { ContractHelper } from '@/helpers/contract';
+import { Helper } from '@/helpers/helper';
+import { useRouter } from 'next/router';
 
 interface IKeyAccess extends Omit<KeyAccessDocument, 'user' | 'contract'> {
   user: UserDocument;
@@ -11,6 +13,7 @@ interface IKeyAccess extends Omit<KeyAccessDocument, 'user' | 'contract'> {
 }
 
 const Claim = ({ keyAccess }: { keyAccess: IKeyAccess }) => {
+  const router = useRouter();
   const claim = async () => {
     const contract = await ContractHelper.init(keyAccess.contract.address);
     const address = await contract.signer.getAddress();
@@ -22,18 +25,28 @@ const Claim = ({ keyAccess }: { keyAccess: IKeyAccess }) => {
     );
     await api.claim({ id: keyAccess._id, owner: address });
     await tx.wait();
+    router.push('/');
   };
   return (
-    <div>
-      claim
+    <div className="flex flex-col  w-full items-center md:items-start mx-auto px-2 mt-2">
+      <h3 className="text-2xl mb-2">Claim your NFT</h3>
       <p>
-        {keyAccess.user.wallet} invited you to claim NFT from{' '}
-        {(keyAccess.contract.metadata as any).name}
+        <span className="text-orange-500">
+          {Helper.shortenAddress(keyAccess.user.wallet)}
+        </span>{' '}
       </p>
-      {/*
-      Connect button
-      */}
-      <button onClick={claim}>Claim</button>
+      <button
+        className="bg-orange-500 rounded-lg p-1 w-[70%] md:max-w-[150px] min-w-[150px] min-h-[50px] hover:bg-orange-400 text-white my-3"
+        onClick={claim}
+      >
+        Claim
+      </button>
+      <p>
+        Invited you to claim NFT from{' '}
+        <span className="text-orange-500">
+          {(keyAccess.contract.metadata as any).name}
+        </span>
+      </p>
     </div>
   );
 };

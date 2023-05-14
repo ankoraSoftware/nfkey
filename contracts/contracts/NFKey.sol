@@ -46,7 +46,6 @@ contract NFKey is Ownable, EIP712, ERC721URIStorage {
         // Mint the tokens
         _mint(receiver, newItemId);
         _setTokenURI(newItemId, key.tokenUri);
-        usedSignatures[signature] = true;
         tokenSignatures[newItemId] = signature;
     }
 

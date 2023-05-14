@@ -63,6 +63,7 @@ const Locks = ({ locks }: any) => {
         </div>
       </div>
       <Table
+        isExpandable={false}
         data={parseData}
         columns={[
           { title: 'Name', key: 'name' },

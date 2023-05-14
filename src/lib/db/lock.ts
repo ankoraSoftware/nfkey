@@ -1,10 +1,11 @@
-import { Schema, model, models, Model, Document } from 'mongoose';
+import { ObjectId } from 'mongodb';
+import mongoose, { Schema, model, models, Model, Document } from 'mongoose';
 
 interface LockAttributes {
   name: string;
   type: string;
   apiKey: string;
-  userId: string;
+  user: Schema.Types.ObjectId;
   metadata: object;
 }
 
@@ -14,7 +15,7 @@ export interface LockDocument extends Document, LockAttributes {}
 
 const lockSchema = new Schema<LockDocument, LockModel>({
   name: String,
-  userId: String,
+  user: { type: Schema.Types.ObjectId, ref: 'User' },
   type: String,
   apiKey: String,
   metadata: Object,

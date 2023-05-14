@@ -1,11 +1,11 @@
 import { Inter } from 'next/font/google';
 import { useState } from 'react';
 import Input from '@/components/Input';
-import router from 'next/router';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import Select from '@/components/Select';
 import { api } from '@/lib/api';
 import toast from 'react-hot-toast';
+import CryptoJS from 'crypto-js';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -19,11 +19,16 @@ export enum ELock {
   random = 'RandomLock',
 }
 
+const secretKey = 'SecretKey245';
+const decryptMessage = (text: string) => {
+  return CryptoJS.AES.decrypt(text, secretKey).toString(CryptoJS.enc.Utf8);
+};
+
 export default function EditLock({ lock }: any) {
   const [formData, setFormData] = useState<LockFormData>({
-    name: lock.name,
-    type: lock.type,
-    apiKey: lock.apiKey,
+    name: lock?.name,
+    type: lock?.type,
+    apiKey: decryptMessage(lock?.apiKey),
   });
 
   const onSubmit = async () => {
@@ -47,10 +52,10 @@ export default function EditLock({ lock }: any) {
 
   return (
     <main
-      className={`max-w-[1440px] min-h-screen  m-auto bg-gray-100 flex  justify-center ${inter.className}`}
+      className={`max-w-[1440px] min-h-screen  m-auto  flex justify-center ${inter.className} px-2 md:px-0`}
     >
       <div className="max-w-[600px] m-auto w-full flex flex-col mt-10 text-orange-500">
-        <h1 className=" text-2xl mb-2 text-orange-500 mb-6">Edit lock</h1>
+        <h1 className=" text-2xl text-orange-500 mb-6">Edit lock</h1>
 
         <div className="flex flex-col gap-4">
           <Input
@@ -68,6 +73,7 @@ export default function EditLock({ lock }: any) {
               options={Object.values(ELock).map((type) => ({
                 id: type,
                 value: type,
+                label: type,
               }))}
               value={formData.type}
               containerStyle="bg-white border rounded-md border-gray-300 hover:border-gray-500 w-full]"

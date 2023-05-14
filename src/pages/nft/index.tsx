@@ -13,16 +13,6 @@ type Props = {
 const NFT: React.FC<Props> = ({ contracts }) => {
   const router = useRouter();
 
-  const deleteNft = async (id: any) => {
-    try {
-      await api.deleteNft(id as string);
-      toast.success('Successfully deleted nft!');
-      router.push('/nft');
-    } catch (error: any) {
-      toast.error(`Error: ${error.message.substring(0, 25)}`);
-    }
-  };
-
   const parseData = (contracts || []).map((item: any) => {
     return {
       name: item.metadata.name.trim(),
@@ -36,13 +26,6 @@ const NFT: React.FC<Props> = ({ contracts }) => {
             <PaperAirplaneIcon className="cursor-pointer text-gray-500 w-5 h-5 hover:opacity-75" />
           ),
           action: () => router.push(`/nft/manage/${item._id}`),
-        },
-        {
-          name: 'Delete',
-          icon: (
-            <TrashIcon className="cursor-pointer text-red-500 w-5 h-5 hover:opacity-75" />
-          ),
-          action: () => deleteNft(item._id),
         },
       ],
     };
@@ -88,7 +71,6 @@ export async function getServerSideProps({ req }: any) {
     const contractsRes = await api.getContracts();
     contracts = contractsRes.contracts;
   }
-  console.log(contracts, 'contracts');
   return {
     props: { contracts: contracts },
   };

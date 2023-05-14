@@ -31,4 +31,25 @@ export class Nuki {
   async lock(lockId: string) {
     return this.api.post(`smartlock/${lockId}/action/lock`);
   }
+
+  async unlock(lockId: string) {
+    return this.api.post(`smartlock/${lockId}/action/unlock`);
+  }
+
+  async getLock(lockId: string) {
+    return this.api.get(`smartlock/${lockId}`);
+  }
+
+  async getLockStatus(lockId: string) {
+    const { data: lockData } = await this.api.get(`smartlock/${lockId}`);
+    const lockStatus = lockData?.state.state;
+    if (lockStatus === 3 || lockStatus === 5)
+      return {
+        lockAction: 'Lock',
+      };
+    else if (lockStatus === 1)
+      return {
+        lockAction: 'Unlock',
+      };
+  }
 }

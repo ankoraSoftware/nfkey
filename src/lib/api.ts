@@ -7,7 +7,7 @@ export class Api {
   constructor() {
     this.api = axios.create({
       withCredentials: true,
-      baseURL: 'http://localhost:3000',
+      baseURL: 'https://850d-195-222-40-114.ngrok-free.app',
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
@@ -65,11 +65,6 @@ export class Api {
     return res.data;
   }
 
-  async deleteNft(id: string) {
-    const res = await this.api.delete(`/api/nft/delete/${id}`);
-    return res.data;
-  }
-
   async createContract(data: any) {
     return this.api.post('/api/contract', data);
   }
@@ -123,6 +118,11 @@ export class Api {
 
   async unlock(data: any) {
     const res = await this.api.post(`/api/unlock`, data);
+    return res.data;
+  }
+
+  async lockAction(contract: any) {
+    const res = await this.api.post('/api/unlock/status', contract);
     return res.data;
   }
 }

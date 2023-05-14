@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 
 export interface ISelectProps {
   options: any;
@@ -29,9 +29,9 @@ const Select = ({
 
   useEffect(() => {
     setIsOptionsOpen(false);
-    document.addEventListener("mousedown", handleOutsideClick);
+    document.addEventListener('mousedown', handleOutsideClick);
     return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
+      document.removeEventListener('mousedown', handleOutsideClick);
     };
   }, []);
 
@@ -48,14 +48,14 @@ const Select = ({
     <div>
       <div
         className={`w-full ${
-          errorMessage ? "border border-error rounded-lg" : containerStyle
+          errorMessage ? 'border border-error rounded-lg' : containerStyle
         }  relative flex flex-col 
-      ${disabled && "bg-gray-700 cursor-not-allowed border-none"}`}
+      ${disabled && 'bg-gray-700 cursor-not-allowed border-none'}`}
         ref={selectRef}
       >
         <div
           className={`${selectStyle} w-full  p-3 flex items-center justify-between 
-        ${disabled ? "cursor-not-allowed" : "cursor-pointer"}
+        ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}
         `}
           onClick={() => !disabled && setIsOptionsOpen(!isOptionsOpen)}
         >
@@ -70,7 +70,7 @@ const Select = ({
               />
             )}
             <p className="font-medium text-black">
-              {typeof value === "string" ? value : value?.value}
+              {typeof value === 'string' ? value : value?.value}
             </p>
           </span>
           {icon && icon}
@@ -92,7 +92,7 @@ const Select = ({
                     setIsOptionsOpen(false);
                   }}
                   className={`p-2 text-start cursor-pointer hover:bg-gray-200 w-full ${
-                    option.value === value ? "text-orange-500" : "text-black"
+                    option.value === value ? 'text-orange-500' : 'text-black'
                   }`}
                 >
                   <span className="flex">
@@ -105,7 +105,7 @@ const Select = ({
                         alt="symbol"
                       />
                     )}
-                    {option.value}
+                    {option.label}
                   </span>
                 </p>
               );

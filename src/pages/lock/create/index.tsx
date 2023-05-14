@@ -15,7 +15,7 @@ interface LockFormData {
   name: string;
   type: ELock;
   apiKey: string;
-  userId: string;
+  user: string;
   metadata: any;
 }
 export enum ELock {
@@ -30,16 +30,20 @@ export default function Home({ user }: any) {
     name: '',
     type: ELock.nuki,
     apiKey: '',
-    userId: user?._id,
+    user: user?._id,
     metadata: null,
   });
 
   const getLocks = async () => {
-    const lockHelper = new LockHelper(formData.type, formData.apiKey);
-    if (lockHelper.lock) {
-      const locks = await lockHelper.lock.getLocks();
-      setLocks([...locks]);
-      console.log(locks, 'locks');
+    try {
+      const lockHelper = new LockHelper(formData.type, formData.apiKey);
+      if (lockHelper.lock) {
+        const locks = await lockHelper.lock.getLocks();
+        setLocks([...locks]);
+        console.log(locks, 'locks');
+      }
+    } catch (error: any) {
+      toast.error(`Error: Lock does't exist`);
     }
   };
 
@@ -64,10 +68,10 @@ export default function Home({ user }: any) {
 
   return (
     <main
-      className={`max-w-[1440px] min-h-screen  m-auto bg-gray-100 flex  justify-center ${inter.className}`}
+      className={`max-w-[1440px] min-h-screen m-auto flex justify-center ${inter.className} px-2 md:px-0`}
     >
       <div className="max-w-[600px] m-auto w-full flex flex-col mt-10 text-orange-500">
-        <h1 className=" text-2xl mb-2 text-orange-500 mb-6">Create Lock</h1>
+        <h1 className=" text-2xl text-orange-500 mb-6">Create Lock</h1>
 
         <div className="flex flex-col gap-4">
           <Input
@@ -85,6 +89,7 @@ export default function Home({ user }: any) {
               options={Object.values(ELock).map((type) => ({
                 id: type,
                 value: type,
+                label: type,
               }))}
               value={formData.type}
               containerStyle="bg-white border rounded-md border-gray-300 hover:border-gray-500 w-full]"
@@ -108,19 +113,29 @@ export default function Home({ user }: any) {
           >
             Get Locks
           </button>
-          {locks.map((l) => {
-            return (
-              <div
-                key={l.id}
-                onClick={() => setFormData({ ...formData, metadata: l })}
-              >
-                {l.name}
-              </div>
-            );
-          })}
+          <div className="flex flex-wrap">
+            {locks.map((l) => {
+              return (
+                <div
+                  className={`w-[200px] rounded-md border border-orange-500 px-3 py-2 text-center text-sm font-semibold text-black hover:text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500 cursor-pointer
+                  ${formData.metadata && 'border-green-700'}
+                  `}
+                  key={l.id}
+                  onClick={() => {
+                    setFormData({ ...formData, metadata: l });
+                    toast.success('Successfully set metadata');
+                  }}
+                >
+                  {l.name}
+                </div>
+              );
+            })}
+          </div>
+
           <button
+            disabled={!formData.metadata}
             onClick={onSubmit}
-            className="text-white bg-orange-500 hover:opacity-75 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+            className="text-white bg-orange-500 hover:opacity-75 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center disabled:bg-gray-500 disabled:cursor-not-allowed"
           >
             Submit
           </button>

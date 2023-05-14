@@ -12,7 +12,7 @@ import { Helper } from '@/helpers/helper';
 import router from 'next/router';
 import { api } from '@/lib/api';
 import toast from 'react-hot-toast';
-import { getProvider } from '@/components/Web3Modal';
+import { getProvider } from '@/components/ConnectModal';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -53,7 +53,6 @@ export default function CreateNFT({ locks }: { locks: LockDocument[] }) {
         name: formData.name,
         description: formData.description,
         external_link: formData.externalLink,
-        lock: formData.lockId,
       };
       const hash = await Helper.uploadJsonToIpfs(metadata);
       const { data: artifact } = await axios.get(
@@ -70,6 +69,7 @@ export default function CreateNFT({ locks }: { locks: LockDocument[] }) {
         metadata,
         address: ethers.utils.getAddress(contract.address),
         chainId: provider.network.chainId,
+        lock: formData.lockId,
       });
       toast.success('Successfully created nft!');
       router.push('/nft');
@@ -91,10 +91,10 @@ export default function CreateNFT({ locks }: { locks: LockDocument[] }) {
   console.log('formData', formData);
   return (
     <main
-      className={`max-w-[1440px] w-full min-h-screen  m-auto bg-gray-100 flex pb-4 justify-center ${inter.className}`}
+      className={`max-w-[1440px] w-full min-h-screen m-auto flex pb-4 justify-center ${inter.className} px-2 md:px-0`}
     >
       <div className="max-w-[600px] m-auto w-full flex flex-col mt-10 text-orange-500 ">
-        <h1 className=" text-2xl mb-2 text-orange-500 mb-6">Create NFT</h1>
+        <h1 className=" text-2xl  text-orange-500 mb-6">Create NFT</h1>
 
         <div className="flex flex-col gap-6">
           <div className="mb-4">
@@ -117,6 +117,7 @@ export default function CreateNFT({ locks }: { locks: LockDocument[] }) {
               options={locks.map((lock) => ({
                 id: lock._id,
                 value: lock._id,
+                label: lock.name,
               }))}
               value={formData.lockId}
               containerStyle="bg-white border rounded-md border-gray-300 hover:border-gray-500 w-full]"
